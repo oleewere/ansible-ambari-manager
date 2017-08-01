@@ -1,0 +1,1 @@
+# ansible-ambari-manager
