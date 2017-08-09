@@ -1,0 +1,9 @@
+---
+- hosts: ambari-server
+  sudo: true
+  tasks:
+  - include: ../roles/ambari-server/tasks/stop.yml
+  - name: Uninstall IOP-SOLR mpack
+    sudo: ture
+    action: shell sudo ambari-server uninstall-mpack --mpack-name=iop-solr-ambari-mpack --verbose
+  - include: ../roles/ambari-server/tasks/start.yml

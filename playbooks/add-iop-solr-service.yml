@@ -1,0 +1,9 @@
+---
+- hosts: iop-solr
+  sudo: true
+  vars:
+    ambari_service: SOLR
+  tasks:
+    - include: ../roles/ambari-server/tasks/add-service.yml
+    - include: ../roles/ambari-server/tasks/add-component.yml ambari_component=SOLR
+    # TODO: add configs

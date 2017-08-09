@@ -1,0 +1,5 @@
+ambari_username: admin
+ambari_password: admin
+ambari_cluster: cl1
+ambari_protocol: http
+ambari_port: 8080

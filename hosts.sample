@@ -4,6 +4,9 @@ c6401.ambari.apache.org
 [ambari-agent]
 c6401.ambari.apache.org
 
+[iop-solr]
+c6401.ambari.apache.org
+
 [ambari-server:vars]
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key

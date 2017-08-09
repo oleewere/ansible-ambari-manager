@@ -1,0 +1,3 @@
+- name: Ambari-Server stop
+  sudo: true
+  action: shell sudo ambari-server stop
