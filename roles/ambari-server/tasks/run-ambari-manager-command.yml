@@ -1,2 +1,2 @@
 - name: Run Ambari Manager Script
-  script: ../../../scripts/ambari_manager.py
+  script: ../../../scripts/ambari_manager.py {{ custom_action | default('--help') }}
