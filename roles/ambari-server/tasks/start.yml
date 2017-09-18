@@ -1,3 +1,4 @@
 - name: Ambari-Server start
   sudo: true
   action: shell sudo ambari-server start
+  ignore_errors: yes
