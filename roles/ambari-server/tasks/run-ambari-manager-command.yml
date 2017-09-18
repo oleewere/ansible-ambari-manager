@@ -1,2 +1,2 @@
 - name: Run Ambari Manager Script
-  script: ../../../scripts/ambari_manager.py {{ custom_action | default('--help') }}
+  script: ../../../scripts/ambari_manager.py --port {{ ambari_port }} --username {{ ambari_username }} --password {{ ambari_password }} --protocol {{ ambari_protocol }} --cluster {{ ambari_cluster }} {{ additional_params | default('--help') }}
