@@ -16,3 +16,4 @@ rebel-remote.xml
 out
 createDDL.jdbc
 *.retry
+hosts
