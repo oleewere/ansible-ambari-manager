@@ -1,0 +1,17 @@
+.classpath
+.project
+.settings
+.idea/
+.iml/
+.DS_Store
+target
+*.pyc
+*.py~
+*.iml
+.hg
+.hgignore
+.hgtags
+rebel.xml
+rebel-remote.xml
+out
+createDDL.jdbc
