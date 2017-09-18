@@ -1,0 +1,4 @@
+- hosts: ambari-server
+  sudo: true
+  tasks:
+  - include: ../roles/ambari-server/tasks/run-ambari-manager-command.yml
