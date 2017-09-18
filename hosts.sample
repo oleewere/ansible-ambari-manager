@@ -7,10 +7,8 @@ c6401.ambari.apache.org
 [iop-solr]
 c6401.ambari.apache.org
 
-[ambari-server:vars]
+[all:vars]
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-
-[all]
 ambari_build_version=103
