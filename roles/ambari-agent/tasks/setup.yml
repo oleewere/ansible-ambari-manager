@@ -1,0 +1,3 @@
+- name: Ambari-Agent reset
+  sudo: true
+  action: shell sudo ambari-agent reset {{ groups[['ambari-server'][0]][0] }}

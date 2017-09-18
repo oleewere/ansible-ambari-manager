@@ -1,0 +1,3 @@
+- name: Ambari-Server setup
+  sudo: true
+  action: shell ambari-server setup -s

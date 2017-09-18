@@ -1,0 +1,3 @@
+- name: Postgres Start
+  sudo: true
+  action: shell service postgresql start

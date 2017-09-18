@@ -1,0 +1,9 @@
+- name: Add Ambari dev repository
+  yum_repository:
+    name: ambari-{{ ambari_version }}-{{ ambari_build_version }}
+    file: ambari
+    description: Ambari yum repo
+    baseurl: "http://s3.amazonaws.com/dev.hortonworks.com/ambari/{{ ambari_os | default('centos6') }}/{{ ambari_base_version }}/BUILDS/{{ ambari_version }}-{{ ambari_build_version }}/"
+    gpgcheck: 1
+    gpgkey: "http://s3.amazonaws.com/dev.hortonworks.com/ambari/{{ ambari_os | default('centos6') }}/{{ ambari_base_version }}/BUILDS/{{ ambari_version }}-{{ ambari_build_version }}/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+  when: ambari_build_version is defined

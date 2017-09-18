@@ -1,0 +1,4 @@
+- name: Ambari-Server setup (ignore errors)
+  sudo: true
+  action: shell ambari-server setup -s
+  ignore_errors: yes

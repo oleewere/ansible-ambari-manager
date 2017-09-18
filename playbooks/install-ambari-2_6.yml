@@ -1,0 +1,22 @@
+- hosts: ambari-server
+  sudo: true
+  vars:
+    ambari_base_version: 2.x
+    ambari_version: 2.6.0.0
+  tasks:
+    - include: ../roles/ambari-common/tasks/install-dev-yum-repo.yml
+    - include: ../roles/ambari-server/tasks/install.yml
+    - include: ../roles/ambari-server/tasks/setup-ignore-errors.yml
+    - include: ../roles/ambari-server/tasks/postgres-start.yml
+    - include: ../roles/ambari-server/tasks/setup.yml
+    - include: ../roles/ambari-server/tasks/start.yml
+- hosts: ambari-agent
+  sudo: true
+  vars:
+    ambari_base_version: 2.x
+    ambari_version: 2.6.0.0
+  tasks:
+    - include: ../roles/ambari-common/tasks/install-dev-yum-repo.yml
+    - include: ../roles/ambari-agent/tasks/install.yml
+    - include: ../roles/ambari-agent/tasks/setup.yml
+    - include: ../roles/ambari-agent/tasks/start.yml
