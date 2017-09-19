@@ -11,5 +11,5 @@ c6401.ambari.apache.org
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-ambari_build_version=103
+ambari_build_number=103
 kerberos_domain_realm=ambari.apache.org
