@@ -8,6 +8,6 @@
       url: "{{ iop_solr_mpack_url | default('http://s3.amazonaws.com/dev.hortonworks.com/IOPSOLR/centos6/1.x/BUILDS/1.0.0.0-24/tars/iopsolr/iop-solr-mpack-6.3.0.1.0.0.0-24.tar.gz') }}"
       dest: /tmp/iop-solr-mpack.tar.gz
   - name: Install IOP-SOLR mpack
-    sudo: ture
-    action: shell sudo ambari-server install-mpack --mpack=/tmp/iop-solr-mpack.tar.gz --verbose
+    become: ture
+    action: shell ambari-server install-mpack --mpack=/tmp/iop-solr-mpack.tar.gz --verbose
   - include: ../../roles/ambari-server/tasks/start.yml
