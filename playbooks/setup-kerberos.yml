@@ -1,0 +1,10 @@
+- hosts: ambari-server
+  sudo: true
+  tasks:
+  - include: ../roles/ambari-server/tasks/run-script.yml
+    vars:
+      script_location: ../../../scripts/kerberos/setup-kerberos.sh
+    environment:
+      REALM: "{{ kerberos_realm | default('EXAMPLE.COM') }}"
+      DOMAIN_REALM: "{{ kerberos_domain_realm }}"
+    when: kerberos_domain_realm is defined
