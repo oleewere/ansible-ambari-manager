@@ -47,3 +47,16 @@ ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extr
 ```bash
 ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extra-vars "ambari_base_url=http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/2.x/BUILDS/2.6.0.0-113 ambari_version=2.6.0.0 ambari_build_number=113 skip_ambari_server_upgrade=True"
 ```
+### Local kinit to access Kerberized Solr UI from browsers
+```bash
+# important parameters: (you can set as --extra-vars or in the inventory file)
+# - kerberos_realm: kerberos realm (default: EXAMPLE.COM)
+# - kerberos_domain_realm: kerberos domain realm (default: ambari.apache.org)
+# - kdc_hostname: used as --kdc-hostname parameter in the kinit command
+# - keytab_file_name: filename of the keytab (saved to /tmp/<keytab_file_name>)
+# - kerberos_service_user: kerberos principal name part
+# - kerberos_service_host: kerberos principal host part
+# (note: make sure kinit group points to that host where the service running)
+
+ansible-playbook -i hosts.sample playbooks/local-kinit.yml -v
+```
