@@ -2,7 +2,7 @@
 - hosts: ambari-server
   sudo: true
   tasks:
-  - include: ../roles/ambari-server/tasks/stop.yml
+  - include: ../..roles/ambari-server/tasks/stop.yml
   - name: Download INFRA-SOLR-METRICS mpack
     get_url:
       url: https://github.com/oleewere/ams-solr-metrics-mpack/releases/download/1.0.0/ams-solr-metrics-mpack-1.0.0.tar.gz
@@ -10,4 +10,4 @@
   - name: Install INFRA-SOLR-METRICS mpack
     sudo: ture
     action: shell sudo ambari-server install-mpack --mpack=/tmp/ams-solr-metrics-mpack-1.0.0.tar.gz --verbose
-  - include: ../roles/ambari-server/tasks/start.yml
+  - include: ../../roles/ambari-server/tasks/start.yml

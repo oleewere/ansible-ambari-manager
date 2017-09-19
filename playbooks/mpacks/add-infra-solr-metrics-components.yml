@@ -1,9 +1,9 @@
 - hosts: ambari-server
   sudo: true
   tasks:
-  - include: ../roles/ambari-server/tasks/run-ambari-manager-command.yml
+  - include: ../../roles/ambari-server/tasks/run-ambari-manager-command.yml
     vars:
       additional_params: --service INFRA_SOLR_METRICS --component INFRA_SOLR_METRICS --next-to-service AMBARI_INFRA --next-to-component INFRA_SOLR --action configure
-  - include: ../roles/ambari-server/tasks/run-ambari-manager-command.yml
+  - include: ../../roles/ambari-server/tasks/run-ambari-manager-command.yml
     vars:
       additional_params: --service INFRA_SOLR_METRICS --component INFRA_SOLR_METRICS --action install

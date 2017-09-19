@@ -2,8 +2,8 @@
 - hosts: ambari-server
   sudo: true
   tasks:
-  - include: ../roles/ambari-server/tasks/stop.yml
+  - include: ../../roles/ambari-server/tasks/stop.yml
   - name: Uninstall INFRA-SOLR-METRICS mpack
     sudo: ture
     action: shell sudo ambari-server uninstall-mpack --mpack-name=ams-solr-metrics-mpack --verbose
-  - include: ../roles/ambari-server/tasks/start.yml
+  - include: ../../roles/ambari-server/tasks/start.yml
