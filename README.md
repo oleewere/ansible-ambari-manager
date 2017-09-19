@@ -9,6 +9,7 @@ pip install ansible
 ## Setup
 
 Create an invertory file (based on hosts.sample) with proper hosts/variables which can be used for the playbooks.
+Also make sure the default variables (group_vars/all) is redefined in your inventory file if it's required
 
 ## Examples
 
