@@ -1,0 +1,6 @@
+- hosts: ambari-server
+  sudo: true
+  tasks:
+  - include: ../roles/ambari-server/tasks/run-script.yml
+    vars:
+      script_location: ../../../scripts/ldap/setup-ldap-server.sh
