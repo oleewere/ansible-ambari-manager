@@ -1,4 +1,5 @@
 - name: Add Ambari dev repository
+  become: true
   yum_repository:
     name: ambari-{{ ambari_version }}-{{ ambari_build_version }}
     file: ambari
