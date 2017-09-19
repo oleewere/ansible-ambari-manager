@@ -1,0 +1,11 @@
+---
+- hosts: kinit_host
+  become: true
+  tasks:
+  - name: Fetch keytab file to /tmp/
+    fetch: src=/etc/security/keytabs/{{ keytab_file_name }} dest=/tmp/{{ keytab_file_name }} flat=yes
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Run local command
+    action: shell kinit --kdc-hostname={{ kdc_hostname }} -kt /tmp/{{ keytab_file_name }} {{ kerberos_service_user }}/{{ kerberos_service_host }}@{{ kerberos_realm | default('EXAMPLE.COM') }}
