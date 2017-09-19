@@ -1,0 +1,4 @@
+- name: Ambari-Server upgrade
+  become: true
+  action: shell ambari-server upgrade -s
+  when: not skip_ambari_server_upgrade

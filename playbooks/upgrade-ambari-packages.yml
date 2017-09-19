@@ -1,0 +1,34 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
+    - include: ../roles/ambari-server/tasks/stop.yml
+    - name: Cleaning task for yum (ambari-server)
+      become: true
+      action: shell /usr/bin/yum clean all
+    - name: Ugrade ambari-server
+      become: true
+      action: shell /usr/bin/yum upgrade ambari-server -y
+    - include: ../roles/ambari-server/tasks/upgrade.yml
+    - include: ../roles/ambari-server/tasks/start.yml
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
+    - include: ../roles/ambari-agent/tasks/stop.yml
+    - name: Cleaning task for yum (ambari-agent)
+      become: true
+      action: shell /usr/bin/yum clean all
+    - name: Ugrade ambari packages
+      become: true
+      action: shell rpm -q {{ item }} && /usr/bin/yum upgrade {{ item }} -y
+      ignore_errors: yes
+      with_items:
+           - ambari-agent
+           - ambari-metrics-collector
+           - ambari-metrics-monitor
+           - ambari-metrics-grafana
+           - ambari-metrics-hadoop-sink
+           - ambari-infra-solr
+           - ambari-infra-solr-client
+    - include: ../roles/ambari-agent/tasks/start.yml

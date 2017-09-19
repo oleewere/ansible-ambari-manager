@@ -20,7 +20,7 @@ ansible -i hosts ambari-server -m shell -a "echo hello"
 
 ### Install Ambari 2.6:
 ```bash
-ansible-playbook -i hosts.sample playbooks/install-ambari-2_6.yml --extra-vars "ambari_build_version=103"
+ansible-playbook -i hosts.sample playbooks/install-ambari-2_6.yml --extra-vars "ambari_build_number=103"
 ```
 
 ### Setup Kerberos:

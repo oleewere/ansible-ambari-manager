@@ -1,0 +1,10 @@
+- name: Add Ambari repository
+  become: true
+  yum_repository:
+    name: ambari-{{ ambari_version }}-{{ ambari_build_number }}
+    file: ambari
+    description: Ambari yum repo
+    baseurl: "{{ ambari_base_url }}"
+    gpgcheck: 1
+    gpgkey: "{{ ambari_base_url }}/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+  when: ambari_build_number is defined and ambari_base_url is defined
