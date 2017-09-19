@@ -1,2 +1,3 @@
 - name: Run Ambari Manager Script
+  become: true
   script: ../../../scripts/ambari_manager.py --stack-name {{ stack_name }} --stack-version {{ stack_version}} --port {{ ambari_port }} --username {{ ambari_username }} --password {{ ambari_password }} --protocol {{ ambari_protocol }} --cluster {{ ambari_cluster }} {{ additional_params | default('--help') }}

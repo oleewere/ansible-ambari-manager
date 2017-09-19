@@ -1,6 +1,6 @@
 ---
 - hosts: ambari-server
-  sudo: true
+  become: true
   tasks:
   - include: ../..roles/ambari-server/tasks/stop.yml
   - name: Download INFRA-SOLR-METRICS mpack

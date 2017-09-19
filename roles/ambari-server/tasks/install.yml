@@ -1,4 +1,5 @@
 - name: Ambari-Server yum install
+  become: true
   yum:
       name: ambari-server
       state: latest

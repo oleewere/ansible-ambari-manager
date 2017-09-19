@@ -1,4 +1,4 @@
 - hosts: ambari-agent
-  sudo: true
+  become: true
   tasks:
     - include: ../roles/ambari-agent/tasks/start.yml

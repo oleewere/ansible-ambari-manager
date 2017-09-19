@@ -1,5 +1,5 @@
 - hosts: ambari-server
-  sudo: true
+  become: true
   tasks:
   - include: ../roles/ambari-server/tasks/run-script.yml
     vars:

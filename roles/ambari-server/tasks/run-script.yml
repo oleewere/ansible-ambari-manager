@@ -1,3 +1,4 @@
 - name: "Run Script: {{ script_location }}"
+  become: true
   script: "{{ script_location }} {{ script_arguments | default('') }}"
   when: script_location is defined
