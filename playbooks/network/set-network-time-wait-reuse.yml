@@ -1,0 +1,21 @@
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - sysctl:
+        name: net.ipv4.tcp_max_tw_buckets
+        value: 1440000
+        sysctl_set: yes
+        state: present
+        reload: no
+    - sysctl:
+        name: net.ipv4.tcp_tw_recycle
+        value: 1
+        sysctl_set: yes
+        state: present
+        reload: no
+    - sysctl:
+        name: net.ipv4.tcp_tw_reuse
+        value: 1
+        sysctl_set: yes
+        state: present
+        reload: yes
