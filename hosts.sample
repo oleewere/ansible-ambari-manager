@@ -9,7 +9,6 @@ ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ambari_build_number=103
-kinit_service_host=c6401.ambari.apache.org
 kerberos_realm=EXAMPLE.COM
 kerberos_domain_realm=ambari.apache.org
 kdc_hostname=c6401.ambari.apache.org
