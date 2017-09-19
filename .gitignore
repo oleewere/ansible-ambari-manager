@@ -17,3 +17,4 @@ out
 createDDL.jdbc
 *.retry
 hosts
+out/
