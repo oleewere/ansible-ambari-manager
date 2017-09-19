@@ -31,4 +31,6 @@
            - ambari-metrics-hadoop-sink
            - ambari-infra-solr
            - ambari-infra-solr-client
+           - ambari-logsearch-portal
+           - ambari-logsearch-logfeeder
     - include: ../roles/ambari-agent/tasks/start.yml
