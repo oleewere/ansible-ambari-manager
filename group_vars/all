@@ -5,4 +5,4 @@ ambari_protocol: http
 ambari_port: 8080
 stack_name: HDP
 stack_version: 2.6
-skip_ambari_server_upgrade: False
+skip_ambari_server_upgrade_command: False

@@ -45,7 +45,7 @@ ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extr
 
 ### Upgarde Ambari - build number change only (2.6.0.0-102 -> 2.6.0.0-113)
 ```bash
-ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extra-vars "ambari_base_url=http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/2.x/BUILDS/2.6.0.0-113 ambari_version=2.6.0.0 ambari_build_number=113 skip_ambari_server_upgrade=True"
+ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extra-vars "ambari_base_url=http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/2.x/BUILDS/2.6.0.0-113 ambari_version=2.6.0.0 ambari_build_number=113 skip_ambari_server_upgrade_command=True"
 ```
 ### Local kinit to access Kerberized Solr UI from browsers
 ```bash
