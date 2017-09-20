@@ -71,3 +71,13 @@ Or you can upload only one service as well: (add stack_service var)
 ansible-playbook -i hosts playbooks/local/upload-stack.yml -v --extra-vars "stack_service=AMBARI_INFRA"
 ```
 
+### Save internal hostname and public IP addresses file from GCE cluster
+```bash
+# save to out/gce_hostnames file with internal hostname ip address pairs (you can put that into /etc/hosts)
+ansible-playbook -i hosts playbooks/gce/gce-get-hosts.yml -v --extra-vars="gce_cluster_name=mycluster"
+# save to out/gce_hostname file with only internal hostnames (you can put that into your inventory file)
+ansible-playbook -i hosts playbooks/gce/gce-get-hosts.yml -v --extra-vars="gce_cluster_name=perf-solr gce_only_internal_address=true"
+# or you can just print a public address to one hostname
+ansible-playbook -i hosts playbooks/gce/print-public-ip.yml --extra-vars="gce_cluster_name=mycluster gce_hostname=hostname.internal"
+```
+
