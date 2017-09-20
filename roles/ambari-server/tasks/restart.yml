@@ -1,0 +1,3 @@
+- name: Ambari-Server start
+  become: true
+  action: shell ambari-server restart
