@@ -1,0 +1,27 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Create tar gz from common-services and stacks
+      action: shell cd {{ local_ambari_location }}/ambari-server/src/main/resources && tar -czf /tmp/upload-stack.tgz stacks common-services
+- hosts: ambari-server
+  become: true
+  tasks:
+    - name: Copy upload-stack.tgz to remote machine
+      copy:
+        src: /tmp/upload-stack.tgz
+        dest: /tmp/ambari-server-upload-stacks/
+    - name: Backup old ambari stack
+      action: shell rm -rf /tmp/ambari-server-stacks-backup/ && mkdir -p /tmp/ambari-server-stacks-backup/ && mv /var/lib/ambari-server/resources/common-services /tmp/ambari-server-stacks-backup/common-services && mv /var/lib/ambari-server/resources/stacks /tmp/ambari-server-stacks-backup/stacks
+      ignore_errors: yes
+    - name: Extract upload-stack.tgz into /var/lib/ambari-server/resources
+      unarchive:
+        src: /tmp/ambari-server-upload-stacks/upload-stack.tgz
+        dest: /var/lib/ambari-server/resources/
+        remote_src: yes
+        owner: "{{ remote_ambari_server_user | default('root')}}"
+        group: "{{ remote_ambari_server_group | default('root')}}"
+    - include: ../../roles/ambari-server/tasks/restart.yml
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - include: ../../roles/ambari-agent/tasks/restart.yml
