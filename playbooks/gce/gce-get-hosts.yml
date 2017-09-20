@@ -1,0 +1,25 @@
+- hosts: gce_controller
+  become: true
+  tasks:
+  - name: "Get gce-cluster ({{ gce_cluster_name }}) hostnames"
+    become: true
+    action: "shell gce info {{ gce_cluster_name }} | grep {{ gce_cluster_name }} | tr -s ' ' | cut -d ' ' -f 1"
+    register: gce_hostnames
+    when: gce_only_internal_address is defined
+  - name: "Get gce-cluster ({{ gce_cluster_name }}) internal hostnames"
+    become: true
+    action: "shell gce info {{ gce_cluster_name }} | grep {{ gce_cluster_name }} | tr -s ' ' | awk '{ print $2 \" \" $1}'"
+    register: gce_hostnames
+    when: gce_only_internal_address is not defined
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    gce_address: "{{ groups['gce_controller'] | first }}"
+  tasks:
+  - name: "Copy hostnames content to out/gce_hostnames"
+    action: "shell mkdir -p {{ playbook_dir }}/../../out"
+  - name: "Copy hostnames content to out/hostnames"
+    copy:
+      content: "{{ hostvars[gce_address]['gce_hostnames'].stdout }}"
+      dest: "{{ playbook_dir }}/../../out/gce_hostnames"
+      force: true
