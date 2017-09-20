@@ -1,0 +1,21 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Build ambari-server jar
+      action: shell cd {{ local_ambari_location }}/ambari-server && mvn clean package -DskipTests
+    - name: Get ambari-server jar location
+      action: shell ls {{ local_ambari_location }}/ambari-server/target/ambari-server*.jar
+      register: ambari_servcer_jar_location
+- hosts: ambari-server
+  become: true
+  tasks:
+    - name: Copy ambari-server jar to remote machine
+      copy:
+        src: "{{hostvars['127.0.0.1']['ambari_servcer_jar_location'].stdout}}"
+        dest: /tmp/ambari-server-uploaded/
+    - include: ../../roles/ambari-server/tasks/stop.yml
+    - name: Backup old ambari-server jar
+      action: shell mkdir -p /tmp/ambari-server-backup && mv /usr/lib/ambari-server/ambari-server*.jar /tmp/ambari-server-backup/
+    - name: Copy new ambari-server jar
+      action: shell mv /tmp/ambari-server-uploaded/ambari-server*.jar /usr/lib/ambari-server/
+    - include: ../../roles/ambari-server/tasks/start.yml

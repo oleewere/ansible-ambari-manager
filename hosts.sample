@@ -9,12 +9,15 @@ ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ambari_build_number=103
+
 kerberos_realm=EXAMPLE.COM
 kerberos_domain_realm=ambari.apache.org
 kdc_hostname=c6401.ambari.apache.org
 keytab_file_name=ambari-infra-solr.service.keytab
 kerberos_service_user=infra-solr
 kerberos_service_host=c6401.ambari.apache.org
+
+local_ambari_location=/Users/oszabo/prj/ambari
 
 [kinit_host]
 c6401.ambari.apache.org
