@@ -60,3 +60,14 @@ ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extr
 
 ansible-playbook -i hosts.sample playbooks/local-kinit.yml -v
 ```
+
+### Upload local stack to remote (common-services and stack)
+```bash
+# required: local_ambari_location in inventory file
+ansible-playbook -i hosts.sample playbooks/local/upload-stack.yml -v
+```
+Or you can upload only one service as well: (add stack_service var)
+```bash
+ansible-playbook -i hosts playbooks/local/upload-stack.yml -v --extra-vars "stack_service=AMBARI_INFRA"
+```
+
