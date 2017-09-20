@@ -1,0 +1,10 @@
+- hosts: gce_controller
+  become: true
+  tasks:
+  - name: "Get gce-cluster ({{ gce_cluster_name}}) hostname: {{ gce_hostname }}"
+    become: true
+    action: "shell gce info {{ gce_cluster_name }} | grep {{ gce_hostname }} | tr -s ' ' | cut -d ' ' -f 2"
+    register: result
+  - name: "Print hostname/public IP pair"
+    debug:
+      msg: "Internal hostname: {{ gce_hostname }}, Public IP Address: {{ result.stdout }}"
