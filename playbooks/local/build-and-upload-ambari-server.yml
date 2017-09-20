@@ -3,6 +3,7 @@
   tasks:
     - name: Build ambari-server jar
       action: shell cd {{ local_ambari_location }}/ambari-server && mvn clean package -DskipTests
+      no_log: True
     - name: Get ambari-server jar location
       action: shell ls {{ local_ambari_location }}/ambari-server/target/ambari-server*.jar
       register: ambari_servcer_jar_location
