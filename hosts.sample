@@ -21,3 +21,11 @@ local_ambari_location=/Users/oszabo/prj/ambari
 
 [kinit_host]
 c6401.ambari.apache.org
+
+[gce-controller]
+xxx.xxx.xxx.xxx
+
+[gce-controller:vars]
+ansible_ssh_user=root
+ansible_ssh_private_key_file=~/keys/gce-key
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
