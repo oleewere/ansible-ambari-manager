@@ -1,4 +1,4 @@
-- hosts: ambari-agent
+- hosts: ambari-server
   become: true
   tasks:
-    - include: ../roles/ambari-agent/tasks/start.yml
+    - include: ../roles/ambari-server/tasks/start.yml
