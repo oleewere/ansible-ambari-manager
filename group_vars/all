@@ -5,4 +5,9 @@ ambari_protocol: http
 ambari_port: 8080
 stack_name: HDP
 stack_version: 2.6
+pyton_site_packages_location: /usr/lib/python2.6/site-packages
 skip_ambari_server_upgrade_command: False
+remote_ambari_server_user: root
+remote_ambari_server_group: root
+remote_ambari_agent_user: root
+remote_ambari_agent_group: root
