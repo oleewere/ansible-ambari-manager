@@ -1,0 +1,27 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "Create tar gz for {{ pyton_site_packages_location }}/ambari_agent from ambari-server/src/main/python/ambari_agent"
+      action: shell cd {{ local_ambari_location }}/ambari-agent/src/main/python && tar -czf /tmp/ambari-agent-python-site-packages.tgz ambari_agent
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: Remove old backup
+    file:
+      path: /tmp/ambari-agent-python-backup/
+      state: absent
+  - name: Create backup folder
+    file:
+      path: /tmp/ambari-agent-python-backup/
+      state: directory
+  - name: Backup old ambari agent python files in site-packages
+    action: shell cd {{ pyton_site_packages_location }} && tar -cvzf /tmp/ambari-agent-python-backup/ambari-agent-python-site-packages.tgz ambari_agent/*.py
+    ignore_errors: yes
+  - name: "Extract /tmp/ambari-agent-python-site-packages.tgz into {{ pyton_site_packages_location }}"
+    unarchive:
+      src: /tmp/ambari-agent-python-site-packages.tgz
+      dest: "{{ pyton_site_packages_location }}"
+      owner: "{{ remote_ambari_agent_user }}"
+      group: "{{ remote_ambari_agent_group }}"
+      mode: 0755
+  - include: ../../roles/ambari-agent/tasks/restart.yml
