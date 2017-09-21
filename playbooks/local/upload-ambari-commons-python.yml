@@ -1,0 +1,65 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "Create tar gz for {{ pyton_site_packages_location }}/ambari_server from ambari-server/src/main/python/ambari_server"
+      action: shell cd {{ local_ambari_location }}/ambari-common/src/main/python && tar -czf /tmp/ambari-common-python.tgz resource_management ambari_simplejson ambari_jinja2 ambari_commons
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: Remove old backup (ambari-server-common)
+    file:
+      path: /tmp/ambari-server-common-backup/
+      state: absent
+    when: ambari_agent_only is not defined
+  - name: Create backup folder (ambari-server-common)
+    file:
+      path: /tmp/ambari-server-common-backup/
+      state: directory
+    when: ambari_agent_only is not defined
+  - name: Backup old ambari server common python files in /usr/lib/ambari-server/lib
+    action: shell cd /usr/lib/ambari-server/lib && tar -cvzf /tmp/ambari-server-common-backup/ambari-server-common.tgz resource_management ambari_simplejson ambari_jinja2 ambari_commons
+    ignore_errors: yes
+    when: ambari_agent_only is not defined
+  - name: "Delete python files from /usr/lib/ambari-server/lib/"
+    action: "shell rm -rf /usr/lib/ambari-server/lib/**.py"
+    when: ambari_agent_only is not defined
+  - name: "Extract /tmp/ambari-common-python.tgz into /usr/lib/ambari-server/lib/"
+    unarchive:
+      src: /tmp/ambari-common-python.tgz
+      dest: /usr/lib/ambari-server/lib/
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+    when: ambari_agent_only is not defined
+  - include: ../../roles/ambari-server/tasks/restart.yml
+    when: ambari_agent_only is not defined
+- hosts: ambari-agent
+  become: true
+  tasks:
+  - name: Remove old backup (ambari-agent-common)
+    file:
+      path: /tmp/ambari-agent-common-backup/
+      state: absent
+    when: ambari_server_only is not defined
+  - name: Create backup folder (ambari-agent-common)
+    file:
+      path: /tmp/ambari-agent-common-backup/
+      state: directory
+    when: ambari_server_only is not defined
+  - name: Backup old ambari agent common python files in /usr/lib/ambari-agent/lib
+    action: shell cd /usr/lib/ambari-agent/lib && tar -cvzf /tmp/ambari-agent-common-backup/ambari-agent-common.tgz resource_management ambari_simplejson ambari_jinja2 ambari_commons
+    ignore_errors: yes
+    when: ambari_server_only is not defined
+  - name: "Delete python files from /usr/lib/ambari-agent/lib/"
+    action: "shell rm -rf /usr/lib/ambari-agent/lib/**.py"
+    when: ambari_server_only is not defined
+  - name: "Extract /tmp/ambari-common-python.tgz into /usr/lib/ambari-agent/lib/"
+    unarchive:
+      src: /tmp/ambari-common-python.tgz
+      dest: /usr/lib/ambari-agent/lib/
+      owner: "{{ remote_ambari_agent_user }}"
+      group: "{{ remote_ambari_agent_group }}"
+      mode: 0755
+    when: ambari_server_only is not defined
+  - include: ../../roles/ambari-agent/tasks/restart.yml
+    when: ambari_server_only is not defined
