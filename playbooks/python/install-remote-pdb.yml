@@ -1,0 +1,22 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+    - include: ../../roles/ambari-common/tasks/install-pip.yml
+      when: ambari_agent_only is not defined
+    - name: "Install remote-pdb"
+      action: shell pip install -i https://pypi.anaconda.org/pypi/simple remote-pdb
+      when: ambari_agent_only is not defined
+    - name: "Print remote-pdb usage"
+      action: "shell echo $'Usage: from remote_pdb import RemotePdb\nRemotePdb('127.0.0.1', 4444).set_trace()'"
+      when: ambari_server_only is not defined
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - include: ../../roles/ambari-common/tasks/install-pip.yml
+      when: ambari_server_only is not defined
+    - name: "Install remote-pdb"
+      action: shell pip install -i https://pypi.anaconda.org/pypi/simple remote-pdb
+      when: ambari_server_only is not defined
+    - name: "Print remote-pdb usage"
+      action: "shell echo $'Usage: from remote_pdb import RemotePdb\nRemotePdb('127.0.0.1', 4444).set_trace()'"
+      when: ambari_server_only is not defined
