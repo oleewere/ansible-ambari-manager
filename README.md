@@ -71,7 +71,7 @@ Or you can upload only one service as well: (add stack_service var)
 ansible-playbook -i hosts playbooks/local/upload-stack.yml -v --extra-vars "stack_service=AMBARI_INFRA"
 ```
 
-### Upload Ambari agent python files
+### Upload local Ambari agent python files to remote
 
 ```bash
 ansible-playbook -i hosts.sample playbooks/local/upload-ambari-agent-python.yml -v
