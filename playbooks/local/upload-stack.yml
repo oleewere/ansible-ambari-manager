@@ -10,10 +10,6 @@
 - hosts: ambari-server
   become: true
   tasks:
-    - name: Copy upload-stack.tgz to remote machine
-      copy:
-        src: /tmp/upload-stack.tgz
-        dest: /tmp/ambari-server-upload-stacks/
     - name: Backup old ambari stack
       action: shell rm -rf /tmp/ambari-server-stacks-backup/ && mkdir -p /tmp/ambari-server-stacks-backup/ && mv /var/lib/ambari-server/resources/common-services /tmp/ambari-server-stacks-backup/common-services && mv /var/lib/ambari-server/resources/stacks /tmp/ambari-server-stacks-backup/stacks
       ignore_errors: yes
@@ -24,11 +20,10 @@
       when: stack_service is defined
     - name: Extract upload-stack.tgz into /var/lib/ambari-server/resources
       unarchive:
-        src: /tmp/ambari-server-upload-stacks/upload-stack.tgz
+        src: /tmp/upload-stack.tgz
         dest: /var/lib/ambari-server/resources/
-        remote_src: yes
-        owner: "{{ remote_ambari_server_user | default('root')}}"
-        group: "{{ remote_ambari_server_group | default('root')}}"
+        owner: "{{ remote_ambari_server_user }}"
+        group: "{{ remote_ambari_server_group }}"
     - include: ../../roles/ambari-server/tasks/restart.yml
 - hosts: ambari-agent
   become: true
