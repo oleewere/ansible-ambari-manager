@@ -71,6 +71,12 @@ Or you can upload only one service as well: (add stack_service var)
 ansible-playbook -i hosts playbooks/local/upload-stack.yml -v --extra-vars "stack_service=AMBARI_INFRA"
 ```
 
+### Upload Ambari agent python files
+
+```bash
+ansible-playbook -i hosts.sample playbooks/local/upload-ambari-agent-python.yml -v
+```
+
 ### Save internal hostname and public IP addresses file from GCE cluster
 ```bash
 # save to out/gce_hostnames file with internal hostname ip address pairs (you can put that into /etc/hosts)
