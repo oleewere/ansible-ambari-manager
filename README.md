@@ -77,6 +77,13 @@ ansible-playbook -i hosts playbooks/local/upload-stack.yml -v --extra-vars "stac
 ansible-playbook -i hosts.sample playbooks/local/upload-ambari-agent-python.yml -v
 ```
 
+### Restart an Ambari service
+
+```bash
+ansible-playbook -i hosts.sample playbooks/service/restart.yml --extra-vars "service_name=AMBARI_INFRA" -v
+```
+
+
 ### Save internal hostname and public IP addresses file from GCE cluster
 ```bash
 # save to out/gce_hostnames file with internal hostname ip address pairs (you can put that into /etc/hosts)
