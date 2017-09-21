@@ -1,0 +1,58 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "Create tar gz for {{ pyton_site_packages_location }}/ambari_server from ambari-server/src/main/python/ambari_server"
+      action: shell cd {{ local_ambari_location }}/ambari-server/src/main/python && tar -czf /tmp/ambari-server-python-site-packages.tgz ambari_server
+    - name: "Create tar gz for for {{ pyton_site_packages_location }}/ambari_server from ambari-server/src/main/python/ addendum files"
+      action: shell cd {{ local_ambari_location }}/ambari-server/src/main/python && tar -czf /tmp/ambari-server-python-site-packages-extra.tgz os_check_type.py bootstrap.py setupAgent.py
+    - name: "Create tar gz for for /usr/sbin from ambari-server/src/main/python/ files (ambari-server.py and ambari_server_main.py)"
+      action: shell cd {{ local_ambari_location }}/ambari-server/src/main/python && tar -czf /tmp/ambari-server-python-sbin.tgz ambari-server.py ambari_server_main.py
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: Remove old backup
+    file:
+     path: /tmp/ambari-server-python-backup/
+     state: absent
+  - name: Create backup folder
+    file:
+      path: /tmp/ambari-server-python-backup/
+      state: directory
+  - name: Backup old ambari server python files in site-packages
+    action: shell cd {{ pyton_site_packages_location }} && tar -cvzf /tmp/ambari-server-python-backup/ambari-server-python-site-packages.tgz ambari_server/*.py
+    ignore_errors: yes
+  - name: Backup old ambari server /usr/sbin files
+    action: shell cd {{ pyton_site_packages_location }} && tar -cvzf /tmp/ambari-server-python-backup/ambari-server-python-sbin.tgz /usr/sbin/ambari-server.py /usr/sbin/ambari_server_main.py
+    ignore_errors: yes
+  - name: "Delete python files from {{ pyton_site_packages_location }}/ambari_server"
+    action: "shell rm -rf {{ pyton_site_packages_location }}/ambari_server/**.py"
+  - name: "Delete python files from /usr/sbin"
+    file:
+      path: "{{ item }}"
+      state: absent
+      force: true
+    with_items:
+      - /usr/sbin/ambari-server.py
+      - /usr/sbin/ambari_server_main.py
+  - name: "Extract /tmp/ambari-server-python-site-packages.tgz into {{ pyton_site_packages_location }}"
+    unarchive:
+      src: /tmp/ambari-server-python-site-packages.tgz
+      dest: "{{ pyton_site_packages_location }}"
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: "Extract /tmp/ambari-server-python-site-packages-extra.tgz into {{ pyton_site_packages_location }}/ambari_server"
+    unarchive:
+      src: /tmp/ambari-server-python-site-packages-extra.tgz
+      dest: "{{ pyton_site_packages_location }}/ambari_server"
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: Extract ambari-server-python-sbin.tgz into /usr/sbin/
+    unarchive:
+      src: /tmp/ambari-server-python-sbin.tgz
+      dest: /usr/sbin/
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - include: ../../roles/ambari-server/tasks/restart.yml
