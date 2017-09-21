@@ -1,3 +1,4 @@
 - name: Ambari-Server stop
   become: true
   action: shell ambari-server stop
+  ignore_errors: yes

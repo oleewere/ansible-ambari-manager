@@ -1,3 +1,4 @@
 - name: Ambari-Agent stop
   become: true
   action: shell ambari-agent stop
+  ignore_errors: yes
