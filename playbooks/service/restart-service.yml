@@ -1,0 +1,7 @@
+- include: stop-service.yml
+- hosts: ambari-server
+  become: true
+  tasks:
+  - pause:
+      seconds: "{{ wait_seconds | default('10')}}"
+- include: start-service.yml
