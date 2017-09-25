@@ -9,5 +9,5 @@
       dest: /tmp/ams-solr-metrics-mpack-1.0.0.tar.gz
   - name: Install INFRA-SOLR-METRICS mpack
     become: ture
-    action: shell sudo ambari-server install-mpack --mpack=/tmp/ams-solr-metrics-mpack-1.0.0.tar.gz --verbose
+    action: shell ambari-server install-mpack --mpack=/tmp/ams-solr-metrics-mpack-1.0.0.tar.gz --verbose
   - include: ../../roles/ambari-server/tasks/start.yml
