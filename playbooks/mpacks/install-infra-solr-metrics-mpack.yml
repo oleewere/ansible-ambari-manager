@@ -2,7 +2,7 @@
 - hosts: ambari-server
   become: true
   tasks:
-  - include: ../..roles/ambari-server/tasks/stop.yml
+  - include: ../../roles/ambari-server/tasks/stop.yml
   - name: Download INFRA-SOLR-METRICS mpack
     get_url:
       url: https://github.com/oleewere/ams-solr-metrics-mpack/releases/download/1.0.0/ams-solr-metrics-mpack-1.0.0.tar.gz
