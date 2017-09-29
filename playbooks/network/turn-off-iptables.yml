@@ -1,0 +1,12 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+    - service:
+        name: iptables
+        state: stopped
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - service:
+        name: iptables
+        state: stopped
