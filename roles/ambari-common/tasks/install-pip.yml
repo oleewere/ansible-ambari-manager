@@ -1,6 +1,6 @@
 - name: Check that pip is installed or not
   command: "pip --version"
-  ignore_errors: true
+  ignore_errors: yes
   register: pip_is_installed
   changed_when: false
 - block:

@@ -1,4 +1,4 @@
-- hosts: ranger-admin
+- hosts: ambari-server
   become: true
   tasks:
   - include_role:
@@ -12,3 +12,11 @@
       mode: 0755
   - name: Create Ranger DBA
     action: shell mysql < /tmp/ranger-dba-mysql.sql
+    ignore_errors: yes
+  - include_role:
+      name: ambari-server
+    vars:
+      cmd_params: 'setup --jdbc-db=mysql --jdbc-driver=/opt/mysql-connectors/mysql-connector-java.jar'
+  - include_role:
+      name: ambari-server
+      tasks_from: restart
