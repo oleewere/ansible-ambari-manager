@@ -1,0 +1,3 @@
+- name: Run Ambari Server command: {{ cmd_params }}
+  action: shell ambari-server {{ cmd_params }}
+  when: cmd_param is defined
