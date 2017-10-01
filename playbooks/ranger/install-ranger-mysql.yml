@@ -1,0 +1,14 @@
+- hosts: ranger-admin
+  become: true
+  tasks:
+  - include_role:
+      name: ambari-common
+      tasks_from: install-mysql
+  - copy:
+      src: ../../files/static/ranger-dba-mysql.sql
+      dest: /tmp/ranger-dba-mysql.sql
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: Create Ranger DBA
+    action: shell mysql < /tmp/ranger-dba-mysql.sql
