@@ -4,7 +4,8 @@
   - include_role:
       name: ambari-common
       tasks_from: install-mysql
-  - template:
+  - name: Generate ranger dba SQL script
+    template:
       src: ../../files/templates/ranger/ranger-dba-mysql.sql.j2
       dest: /tmp/ranger-dba-mysql.sql
       owner: "{{ remote_ambari_server_user }}"
