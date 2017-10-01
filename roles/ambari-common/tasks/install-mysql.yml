@@ -1,0 +1,15 @@
+- name: install the latest version of MySQL
+  become: true
+  yum:
+    name: mysql-server
+    state: latest
+- name: Creates MySQL connector directory
+  file: path=/opt/mysql-connectors state=directory
+- name: install MySQL Java connector
+  become: true
+  get_url: url=http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar  dest=/opt/mysql-connectors/mysql-connector-java.jar
+- name: MySQL Start
+  become: true
+  service:
+    name: mysqld
+    state: started
