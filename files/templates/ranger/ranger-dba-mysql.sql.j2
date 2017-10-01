@@ -1,0 +1,13 @@
+CREATE USER 'rangerdba'@'{{ranger_db_host|default('localhost')}}' IDENTIFIED BY 'rangerdba';
+
+GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'{{ranger_db_host|default('localhost')}}';
+
+CREATE USER 'rangerdba'@'%' IDENTIFIED BY 'rangerdba';
+
+GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'%';
+
+GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'{{ranger_db_host|default('localhost')}}' WITH GRANT OPTION;
+
+GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
