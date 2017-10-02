@@ -1,0 +1,8 @@
+- hosts: gce_hosts
+  become: true
+  tasks:
+  - name: Attach and format GCE disks
+    script: ../../scripts/gce/attach-disk.sh
+    environment:
+      GCE_DISK_SIZE: "{{ gce_disk_size | default('200GB') }}"
+      GCE_ZONE: "{{ gce_zone | default('us-east2-a') }}"
