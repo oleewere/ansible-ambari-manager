@@ -1,0 +1,15 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: install the latest version of Apache
+    yum:
+      name: httpd
+      state: latest
+  - name: start httpd service
+    service:
+      name: httpd
+      state: started
+  - name: create repo folder for local repo
+    file:
+      path: /var/www/html/repo
+      state: directory
