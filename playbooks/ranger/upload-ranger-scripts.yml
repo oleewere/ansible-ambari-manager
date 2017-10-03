@@ -1,0 +1,20 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: create directory for ranger scale testing
+    file:
+      path: /opt/ranger_scale_test
+      state: directory
+  - copy:
+      src: ../../scripts/ranger
+      dest: /opt/ranger_scale_test
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: generate config.ini for ranger scale testing
+    template:
+      src: ../../files/templates/ranger/config.ini.j2
+      dest: /opt/ranger_scale_test/config.ini
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
