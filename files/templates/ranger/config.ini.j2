@@ -3,12 +3,12 @@ cluster_name = {{ ambari_cluster }}
 security = True
 
 [spnego]
-principal = HTTP/_HOST@EXAMPLE.COM
+principal = HTTP/{{ranger_scale_test_hostname}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/spnego.service.keytab
 
 [ambari-qa]
 user = ambari-qa
-principal = ambari-qa@EXAMPLE.COM
+principal = ambari-qa-{{ ambari_cluster }}@EXAMPLE.COM
 keytab = /etc/security/keytabs/smokeuser.headless.keytab
 
 [zookeeper]
@@ -18,46 +18,46 @@ zookeeper_quorum = {{ ranger_zookeeper_quorum }}
 ranger_host = {{ ranger_admin_host }}
 ranger_port = 6080
 user = ranger
-principal = rangeradmin/_HOST@EXAMPLE.COM
+principal = rangeradmin/{{ranger_admin_host}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/rangeradmin.service.keytab
 
 [ranger_kms]
 user = kms
-principal = rangerkms/_HOST@EXAMPLE.COM
+principal = rangerkms/{{ranger_kms_host}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/rangerkms.service.keytab
 ranger_kms_service = cl1_kms
-user_list = hive,ambari-qa,hdfs,ranger
+user_list = {{ ranger_kms_userlist }}
 
 [hive]
 user = hive
-principal = hive/_HOST@EXAMPLE.COM
+principal = hive/{{ranger_hive_host}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/hive.service.keytab
-hive_jdbc_url = jdbc:hive2://localhost:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
-user_list = hive,ambari-qa,hdfs
+hive_jdbc_url = jdbc:hive2://{{ ranger_zookeeper_quorum }}/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+user_list = {{ ranger_hive_userlist }}
 database = default
 sleep_time = 5
 
 [hdfs]
 user = hdfs
-principal = hdfs@EXAMPLE.COM
+principal = hdfs-{{ ambari_cluster }}@EXAMPLE.COM
 keytab = /etc/security/keytabs/hdfs.headless.keytab
-user_list = ambari-qa,hive
+user_list = ambari-qa,hdfs
 sleep_time = 1
 
 [kafka]
 user = kafka
-principal = kafka/_HOST@EXAMPLE.COM
+principal = kafka/{{ranger_kafka_host}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/kafka.service.keytab
 kafka_home = /usr/hdp/current/kafka-broker
-user_list = hive,ambari-qa,hdfs,kafka
+user_list = {{ ranger_kafka_userlist }}
 sleep_time = 5
 
 [knox]
-knox_host = localhost
+knox_host = {{ranger_knox_host}}
 knox_port = 8443
 knox_topology = default
 user_list = sam,tom,admin
-principal = knox/_HOST@EXAMPLE.COM
+principal = knox/{{ranger_scale_test_hostname}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/knox.service.keytab
 
 [sam]

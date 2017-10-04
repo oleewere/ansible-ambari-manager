@@ -1,4 +1,4 @@
-- hosts: ambari-server
+- hosts: "{{ranger_scale_test_hostname}}"
   become: true
   tasks:
   - name: create directory for ranger scale testing
