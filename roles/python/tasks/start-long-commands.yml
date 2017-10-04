@@ -1,0 +1,12 @@
+- name: "Create pidfile folder if not exists (pid dir: {{ python_pidfile_folder }}, pid filename: {{ python_pidfile_name }})"
+  file:
+    path: "{{ python_pidfile_folder }}"
+    state: directory
+- name: "Run python command with ('{{ python_command_file }} {{ python_command_file_params }}')"
+  script: ../../../scripts/python/async-python-command.sh
+  environment:
+    PYTHON_COMMAND_FILE: "{{ python_command_file }}"
+    PYTHON_COMMAND_FILE_FOLDER: "{{ python_command_file_folder }}"
+    PYTHON_COMMAND_FILE_PARAMS: "{{ python_command_file_params }}"
+    PYTHON_COMMAND_PID_FILENAME: "{{ python_pidfile_name }}"
+    PYTHON_COMMAND_PID_FOLDER: "{{ python_pidfile_folder }}"

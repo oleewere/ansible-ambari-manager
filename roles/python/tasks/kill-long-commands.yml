@@ -1,0 +1,2 @@
+- name: "Kill process (pid: {{python_pidfile_name}}, pid_folder: {{python_pidfile_folder}})"
+  action: "shell pkill -F {{python_pidfile_folder}}/{{python_pidfile_name}}"
