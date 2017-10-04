@@ -128,6 +128,7 @@ Note: libselinux-python package is required on the remote machine to generate co
 ```bash
 ansible-playbook -i hosts.sample playbooks/ranger/start-ranger-command.yml --extra-vars "ranger_scale_test_hostname=selected_hostname ranger_command_type=kafka ranger_command_param_days=1 ranger_command_param_threads=1 ranger_command_param_executions=1000"
 ```
+Note: make sure you will using the right host for {{ranger_scale_test_hostname}} (like if you will use kafka commands, kafka should exist on that host)
 
 #### Stop running ranger python scripts
 ```bash
