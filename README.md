@@ -95,7 +95,7 @@ ansible-playbook -i hosts playbooks/gce/print-public-ip.yml --extra-vars="gce_cl
 
 ### Ranger/Solr scale testing
 
-#### Upload Ranger scripts for Ranger audit + Solr scale testing
+#### Upload Ranger scripts (e.g.: to /opt/ranger)
 First set the following params in your inventory files (or use them as extra-params):
 ```bash
 ranger_zookeeper_quorum=localhost1:2181,localhost2:2181
