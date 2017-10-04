@@ -1,0 +1,10 @@
+- hosts: "{{ranger_scale_test_hostname}}"
+  become: true
+  tasks:
+    - include_role:
+        name: python
+        tasks_from: kill-long-commands
+      vars:
+        python_pidfile_folder: "{{ ranger_scale_test_folder | default('/opt/ranger_scale_test') }}/ranger/pids"
+        python_pidfile_name: "{{ ranger_command_type }}.pid"
+

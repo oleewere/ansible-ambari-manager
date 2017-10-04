@@ -93,7 +93,9 @@ ansible-playbook -i hosts playbooks/gce/gce-get-hosts.yml -v --extra-vars="gce_c
 ansible-playbook -i hosts playbooks/gce/print-public-ip.yml --extra-vars="gce_cluster_name=mycluster gce_hostname=hostname.internal"
 ```
 
-### Upload Ranger scripts for Ranger audit + Solr scale testing
+### Ranger/Solr scale testing
+
+#### Upload Ranger scripts for Ranger audit + Solr scale testing
 First set the following params in your inventory files (or use them as extra-params):
 ```bash
 ranger_zookeeper_quorum=localhost1:2181,localhost2:2181
@@ -122,3 +124,12 @@ ansible-playbook -i hosts.sample playbooks/ranger/upload-ranger-scripts.yml --ex
 ```
 Note: libselinux-python package is required on the remote machine to generate config.ini file
 
+#### Start ranger python scripts 
+```bash
+ansible-playbook -i hosts.sample playbooks/ranger/start-ranger-command.yml --extra-vars "ranger_scale_test_hostname=selected_hostname ranger_command_type=kafka ranger_command_param_days=1 ranger_command_param_threads=1 ranger_command_param_executions=1000"
+```
+
+#### Stop running ranger python scripts
+```bash
+ansible-playbook -i hosts.sample playbooks/ranger/stop-ranger-command.yml --extra-vars "ranger_scale_test_hostname=selected_hostname ranger_command_type=kafka"
+```
