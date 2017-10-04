@@ -120,4 +120,5 @@ Then you can run (on different hosts, if hive, kafka, kms etc. are on different 
 ```bash
 ansible-playbook -i hosts.sample playbooks/ranger/upload-ranger-scripts.yml --extra-vars "ranger_scale_test_hostname=selected_hostname"
 ```
+Note: libselinux-python package is required on the remote machine to generate config.ini file
 
