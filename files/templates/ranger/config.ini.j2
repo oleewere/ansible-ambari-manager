@@ -13,8 +13,9 @@ keytab = /etc/security/keytabs/smokeuser.headless.keytab
 
 [zookeeper]
 zookeeper_quorum = {{ ranger_zookeeper_quorum }}
+
 [ranger]
-ranger_host = localhost
+ranger_host = {{ ranger_admin_host }}
 ranger_port = 6080
 user = ranger
 principal = rangeradmin/_HOST@EXAMPLE.COM
