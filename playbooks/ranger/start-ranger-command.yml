@@ -9,7 +9,7 @@
         python_pidfile_name: "{{ ranger_command_type }}.pid"
         python_command_file: "{{ ranger_command_type }}_commands.py"
         python_command_file_folder: "{{ ranger_scale_test_folder | default('/opt/ranger_scale_test') }}/ranger"
-        python_command_file_params: " -d {{ ranger_command_param_days | default('1') }} -t {{ ranger_command_param_threads | default('1') }} -e {{ ranger_command_param_executions | default('1000') }} "
+        python_command_file_params: "-d {{ ranger_command_param_days | default('1') }} -t {{ ranger_command_param_threads | default('1') }} -e {{ ranger_command_param_executions | default('1000') }}"
     - name: "Create params folder if not exists"
       file:
         path: "{{ ranger_scale_test_folder | default('/opt/ranger_scale_test') }}/ranger/params"
