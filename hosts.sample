@@ -22,6 +22,27 @@ kerberos_service_host=c6401.ambari.apache.org
 
 local_ambari_location=/Users/oszabo/prj/ambari
 
+ranger_zookeeper_quorum=localhost:2181
+ranger_sam_password=sam-password
+ranger_tom_password=tom-password
+ranger_admin_password=admin-password
+
+ranger_admin_host=localhost
+
+ranger_kms_host=localhost
+ranger_kms_userlist=ambari-qa,hdfs,ranger
+
+ranger_hive_host=localhost
+ranger_hive_userlist=hive,ambari-qa,hdfs
+
+ranger_kafka_host=localhost
+ranger_kafka_userlist=kafka
+
+ranger_knox_host=localhost
+
+ranger_scale_test_folder=/opt
+ranger_scale_test_hostname=localhost
+
 [kinit_host]
 c6401.ambari.apache.org
 
