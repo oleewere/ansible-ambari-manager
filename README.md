@@ -83,7 +83,6 @@ ansible-playbook -i hosts.sample playbooks/local/upload-ambari-agent-python.yml 
 ansible-playbook -i hosts.sample playbooks/service/restart.yml --extra-vars "service_name=AMBARI_INFRA" -v
 ```
 
-
 ### Save internal hostname and public IP addresses file from GCE cluster
 ```bash
 # save to out/gce_hostnames file with internal hostname ip address pairs (you can put that into /etc/hosts)
@@ -92,5 +91,33 @@ ansible-playbook -i hosts playbooks/gce/gce-get-hosts.yml -v --extra-vars="gce_c
 ansible-playbook -i hosts playbooks/gce/gce-get-hosts.yml -v --extra-vars="gce_cluster_name=perf-solr gce_only_internal_address=true"
 # or you can just print a public address to one hostname
 ansible-playbook -i hosts playbooks/gce/print-public-ip.yml --extra-vars="gce_cluster_name=mycluster gce_hostname=hostname.internal"
+```
+
+### Upload Ranger scripts for Ranger audit + Solr scale testing
+First set the following params in your inventory files (or use them as extra-params):
+```bash
+ranger_zookeeper_quorum=localhost1:2181,localhost2:2181
+ranger_sam_password=sam-password
+ranger_tom_password=tom-password
+ranger_admin_password=admin-password
+
+ranger_admin_host=ranger_admin_hostname
+
+ranger_kms_host=kms_hostname
+ranger_kms_userlist=ambari-qa,hdfs,ranger
+
+ranger_hive_host=hive_hostname
+ranger_hive_userlist=hive,ambari-qa,hdfs
+
+ranger_kafka_host=kafka_hostname
+ranger_kafka_userlist=kafka
+
+ranger_knox_host=knox_hostname
+
+ranger_scale_test_folder=/opt
+```
+Then you can run (on different hosts, if hive, kafka, kms etc. are on different hosts, you can set the host with ranger_scale_test_hostname, make sure that hostname is located in your inventory somewhere):
+```bash
+ansible-playbook -i hosts.sample playbooks/ranger/upload-ranger-scripts.yml --extra-vars "ranger_scale_test_hostname=selected_hostname"
 ```
 
