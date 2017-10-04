@@ -15,4 +15,6 @@
         path: "{{ ranger_scale_test_folder | default('/opt/ranger_scale_test') }}/ranger/params"
         state: directory
     - name: "Create params file for the command"
+      vars:
+        python_command_file_params: "-d {{ ranger_command_param_days | default('1') }} -t {{ ranger_command_param_threads | default('1') }} -e {{ ranger_command_param_executions | default('1000') }}"
       action: "shell echo '{{ python_command_file_params }}' > {{ ranger_scale_test_folder | default('/opt/ranger_scale_test') }}/ranger/params/{{ ranger_command_type }}-params.txt"
