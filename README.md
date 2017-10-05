@@ -116,6 +116,12 @@ ranger_kafka_userlist=kafka
 
 ranger_knox_host=knox_hostname
 
+ranger_hbase_host=localhost
+ranger_hbase_userlist=hbase
+
+ranger_yarn_host=localhost
+ranger_yarn_userlist=ambari-qa,yarn
+
 ranger_scale_test_folder=/opt
 ```
 Then you can run (on different hosts, if hive, kafka, kms etc. are on different hosts, you can set the host with ranger_scale_test_hostname, make sure that hostname is located in your inventory somewhere):
