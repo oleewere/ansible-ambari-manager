@@ -60,6 +60,23 @@ user_list = sam,tom,admin
 principal = knox/{{ranger_knox_host}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/knox.service.keytab
 
+[hbase]
+user = hbase
+principal = hbase/{{ranger_hbase_host}}@EXAMPLE.COM
+keytab = /etc/security/keytabs/hbase.service.keytab
+user_list = {{ ranger_hbase_userlist }}
+hbase_cmd = /usr/hdp/current/hbase-client/bin/hbase
+sleep_time = 5
+
+[yarn]
+user = yarn
+principal = rm/{{ranger_yarn_host}}@EXAMPLE.COM
+keytab = /etc/security/keytabs/rm.service.keytab
+user_list = {{ ranger_yarn_userlist }}
+sleep_time = 3
+yarn_jar = /usr/hdp/current/hadoop-mapreduce-client/hadoop-mapreduce-examples.jar
+queue_name = default
+
 [sam]
 user = sam
 password = {{ ranger_sam_password }}
