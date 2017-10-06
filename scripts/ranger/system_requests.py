@@ -25,9 +25,9 @@ import sys
 from audit_logger import AuditLogger
 
 class SystemRequests:
-  def __init__(self):
-    AuditLogger.initialize_logger()
-    AuditLogger.info("Initializing Logger for Ranger Audits")
+  def __init__(self, type):
+    AuditLogger.initialize_logger(type)
+    AuditLogger.info("Initializing Logger for Ranger Audits [" + type + "]")
 
   def execute_command(self, command, user):
     env = os.environ.copy()

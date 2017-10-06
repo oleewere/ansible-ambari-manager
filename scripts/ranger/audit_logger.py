@@ -24,12 +24,12 @@ class AuditLogger:
   logger = None
 
   @staticmethod
-  def initialize_logger(name = 'RangerAuditTest', logging_level = logging.INFO, format = '%(asctime)s - %(levelname)s - %(message)s'):
+  def initialize_logger(type, name = 'RangerAuditTest', logging_level = logging.INFO, format = '%(asctime)s - %(levelname)s - %(message)s'):
 
     logger = logging.getLogger(name)
     logger.setLevel(logging_level)
 
-    handler = logging.handlers.RotatingFileHandler('ranger_audits.log', maxBytes = 268435456, backupCount = 30)
+    handler = logging.handlers.RotatingFileHandler('ranger_audits_' + type + '.log', maxBytes = 268435456, backupCount = 5)
     handler.setLevel(logging_level)
 
     formatter = logging.Formatter(format)

@@ -46,7 +46,7 @@ def main():
   current_time = datetime.datetime.now()
   end_time = current_time + datetime.timedelta(days=options.no_of_days)
 
-  system_requests = SystemRequests()
+  system_requests = SystemRequests('kms')
   machine_config = Config()
 
   user_list = machine_config.get('ranger_kms', 'user_list', 'hive,ambari-qa,hdfs,ranger')
