@@ -17,4 +17,6 @@ out
 createDDL.jdbc
 *.retry
 hosts
+hosts.*
+!hosts.sample
 out/
