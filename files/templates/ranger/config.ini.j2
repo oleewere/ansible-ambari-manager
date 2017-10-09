@@ -3,7 +3,7 @@ cluster_name = {{ ambari_cluster }}
 security = True
 
 [spnego]
-principal = HTTP/{{ranger_scale_test_hostname}}@EXAMPLE.COM
+principal = HTTP/{{inventory_hostname}}@EXAMPLE.COM
 keytab = /etc/security/keytabs/spnego.service.keytab
 
 [ambari-qa]
