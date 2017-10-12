@@ -80,11 +80,11 @@ def execute(system_requests, machine_config, user, no_of_execution):
     kinit_command = ""
     if security_enabled == 'True':
       kinit_command = "/usr/bin/kinit -kt {0} {1};".format(keytab, principal)
-
-    hdfs_ls_command = "{0} hdfs dfs -ls /tmp".format(kinit_command)
+    
+    hdfs_ls_command = "{0} hdfs dfs -ls /tmp | head -n 1".format(kinit_command)
     code, stdout = system_requests.execute_command(hdfs_ls_command, user)
     time.sleep(int(sleep_time))
-    AuditLogger.info("HDFS COMMAND RESULT FOR LIST FILES : " + str(stdout))
+    AuditLogger.info("HDFS COMMAND RESULT FOR LIST FILES : " + str(stdout) + " ...")
 
     hdfs_mkdir_command = "{0} hdfs dfs -mkdir -p /tmp/test_dir_{1}".format(kinit_command, random_numbers)
     code, stdout = system_requests.execute_command(hdfs_mkdir_command, user)
@@ -96,7 +96,7 @@ def execute(system_requests, machine_config, user, no_of_execution):
     time.sleep(int(sleep_time))
     AuditLogger.info("HDFS COMMAND RESULT FOR LIST DIRECTORY /tmp/test_dir_" + str(random_numbers) + " : " + str(stdout))
 
-    hdfs_remove_command = "{0} hdfs dfs -rmr /tmp/test_dir_{1}".format(kinit_command, random_numbers)
+    hdfs_remove_command = "{0} hdfs dfs -rm -r /tmp/test_dir_{1}".format(kinit_command, random_numbers)
     code, stdout = system_requests.execute_command(hdfs_remove_command, user)
     time.sleep(int(sleep_time))
     AuditLogger.info("HDFS COMMAND RESULT FOR DELETE DIRECTORY /tmp/test_dir_" + str(random_numbers) + " : " + str(stdout))
