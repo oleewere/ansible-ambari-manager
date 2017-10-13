@@ -29,11 +29,13 @@ class SystemRequests:
     AuditLogger.initialize_logger(type)
     AuditLogger.info("Initializing Logger for Ranger Audits [" + type + "]")
 
-  def execute_command(self, command, user):
+  def execute_command(self, command, user, max_log_length=sys.maxint):
     env = os.environ.copy()
 
     subprocess_command = ["su", user, "-l", "-s", "/bin/bash", "-c", command]
-    AuditLogger.info("RUNNING COMMAND: " + " ".join(subprocess_command))
+    log_subprocess_command = " ".join(subprocess_command)
+    log_subprocess_command = log_subprocess_command if len(log_subprocess_command) < max_log_length else log_subprocess_command[:max_log_length] + '...'
+    AuditLogger.info("RUNNING COMMAND: " + log_subprocess_command)
     proc = subprocess.Popen(subprocess_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, cwd=None, env=env)
     result = proc.communicate()
     proc_stdout = result[0]

@@ -1,3 +1,6 @@
+[host]
+ip_address = {{ ansible_eth0.ipv4.address }}
+
 [cluster]
 cluster_name = {{ ambari_cluster }}
 security = True
@@ -13,6 +16,15 @@ keytab = /etc/security/keytabs/smokeuser.headless.keytab
 
 [zookeeper]
 zookeeper_quorum = {{ ranger_zookeeper_quorum }}
+
+[ambari-infra]
+user = infra-solr
+principal = infra-solr/{{ inventory_hostname }}@EXAMPLE.COM
+keytab = /etc/security/keytabs/ambari-infra-solr.service.keytab
+solr_server_address = http://{{ solr_server_host }}:{{ solr_server_port }}
+solr_ranger_collection = ranger_audits
+document_number = 100
+sleep_time = 1
 
 [ranger]
 ranger_host = {{ ranger_admin_host }}
