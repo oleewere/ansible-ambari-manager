@@ -3,8 +3,6 @@
   tasks:
     - include: ../roles/ambari-common/tasks/install-yum-repo.yml
     - include: ../roles/ambari-server/tasks/install.yml
-    - include: ../roles/ambari-server/tasks/setup-ignore-errors.yml
-    - include: ../roles/ambari-server/tasks/postgres-start.yml
     - include: ../roles/ambari-server/tasks/setup.yml
     - include: ../roles/ambari-server/tasks/start.yml
 - hosts: ambari-agent
