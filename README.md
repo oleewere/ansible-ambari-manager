@@ -17,9 +17,9 @@ docker build -t oleewere/ansible-ambari-manager:latest .
 From that point you can use docker-compose or docker to run ansible commands like:
 ```bash
 # pull the docker image
-docker run --rm oleewere/ansible-ambari-manager:latest ansible -i hosts.sample -m shell -a 'echo hello'
+docker run --rm oleewere/ansible-ambari-manager:latest ansible -i hosts.sample ambari-server -m shell -a 'echo hello'
 # or build it to yourself
-docker-compose run ansible-ambari-manager ansible -i hosts.sample -m shell -a 'echo hello'
+docker-compose run ansible-ambari-manager ansible -i hosts.sample ambari-server -m shell -a 'echo hello'
 ```
 Note: the examples does not contain the docker or docker-compose prefixes.
 ## Setup
