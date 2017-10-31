@@ -6,6 +6,22 @@ Install ansible (2.x)
 ```bash
 pip install ansible
 ```
+You can use docker as well:
+```bash
+# pull the docker image
+docker pull oleewere/ansible-ambari-manager:latest
+# or build it to yourself
+docker build -t oleewere/ansible-ambari-manager:latest .
+```
+
+From that point you can use docker-compose or docker to run ansible commands like:
+```bash
+# pull the docker image
+docker run --rm oleewere/ansible-ambari-manager:latest ansible -i hosts.sample -m shell -a 'echo hello'
+# or build it to yourself
+docker-compose run ansible-ambari-manager ansible -i hosts.sample -m shell -a 'echo hello'
+```
+Note: the examples does not contain the docker or docker-compose prefixes.
 ## Setup
 
 Create an invertory file (based on hosts.sample) with proper hosts/variables which can be used for the playbooks.
