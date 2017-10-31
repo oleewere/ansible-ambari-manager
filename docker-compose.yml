@@ -19,4 +19,4 @@ services:
     network_mode: host
     volumes:
       - .:/ansible-ambari-manager
-      - ${SSH_KEYS:-~/keys}:/root/keys
+      - ${SSH_KEYS_LOCATION:-~/.ssh}:/root/keys
