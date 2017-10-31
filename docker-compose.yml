@@ -18,3 +18,4 @@ services:
     image: oleewere/ansible-ambari-manager:latest
     volumes:
       - .:/ansible-ambari-manager
+      - ${SSH_KEYS_LOCATION:-~/.ssh}:/root/keys

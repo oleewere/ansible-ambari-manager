@@ -20,3 +20,4 @@ hosts
 hosts.*
 !hosts.sample
 out/
+.env

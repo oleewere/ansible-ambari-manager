@@ -21,7 +21,8 @@ docker run --rm oleewere/ansible-ambari-manager:latest ansible -i hosts.sample a
 # or build it to yourself
 docker-compose run ansible-ambari-manager ansible -i hosts.sample ambari-server -m shell -a 'echo hello'
 ```
-Note: the examples does not contain the docker or docker-compose prefixes.
+ - Note 1.: the examples does not contain the docker or docker-compose prefixes. 
+ - Note 2: `.env` file can be defined in the project folder, there you can set `SSH_KEYS_LOCATION`, which will be passed as a volume folder with the docker-compose command.
 ## Setup
 
 Create an invertory file (based on hosts.sample) with proper hosts/variables which can be used for the playbooks.
