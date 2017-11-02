@@ -1,5 +1,8 @@
 # ansible-ambari-manager
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/oleewere/ansible-ambari-manager.svg)](https://hub.docker.com/r/oleewere/ansible-ambari-manager/)
+[![](https://images.microbadger.com/badges/image/oleewere/ansible-ambari-manager.svg)](https://microbadger.com/images/oleewere/ansible-ambari-manager "")
+
 ## Requirements:
 
 Install ansible (2.x) 
