@@ -1,3 +1,6 @@
+- include_tasks: ../roles/ambari-agent/tasks/status.yml
+
 - name: Ambari-Agent reset
   become: true
-  action: shell ambari-agent reset {{ groups[['ambari-server'][0]][0] }}
+  shell: ambari-agent reset {{ groups[['ambari-server'][0]][0] }}
+  when: groups['ambari-server'] is defined and ambari_agent_status.rc > 0

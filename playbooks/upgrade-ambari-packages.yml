@@ -1,36 +1,37 @@
+- hosts: ambari-server ambari-agent
+  become: true
+  vars:
+    ambari_version: 2.6.0.0
+    ambari_base_version: "{{ ambari_version[0] }}.x"
+  tasks:
+    - include_vars: file="../vars/{{ ansible_distribution }}.yml"
+    - include_vars: file="../roles/ambari-common/vars/ambari-public-repo-root.yml"
+      when: ambari_repo_root is not defined
+    - include_vars: file="../roles/ambari-common/vars/ambari-public-repo-base-url.yml"
+      when: ambari_repo_base_url is not defined
+    - include_tasks: ../roles/ambari-common/tasks/install-repo-{{ ansible_os_family }}.yml
+    - include_tasks: ../roles/ambari-common/tasks/clean-packages-{{ ansible_os_family }}.yml
+
 - hosts: ambari-server
   become: true
   tasks:
-    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
-    - include: ../roles/ambari-server/tasks/stop.yml
-    - name: Cleaning task for yum (ambari-server)
-      become: true
-      action: shell /usr/bin/yum clean all
-    - name: Ugrade ambari-server
-      become: true
-      action: shell /usr/bin/yum upgrade ambari-server -y
-    - include: ../roles/ambari-server/tasks/upgrade.yml
-    - include: ../roles/ambari-server/tasks/start.yml
+    - import_tasks: ../roles/ambari-server/tasks/stop.yml
+
 - hosts: ambari-agent
   become: true
   tasks:
-    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
-    - include: ../roles/ambari-agent/tasks/stop.yml
-    - name: Cleaning task for yum (ambari-agent)
-      become: true
-      action: shell /usr/bin/yum clean all
-    - name: Ugrade ambari packages
-      become: true
-      action: shell rpm -q {{ item }} && /usr/bin/yum upgrade {{ item }} -y
-      ignore_errors: yes
-      with_items:
-           - ambari-agent
-           - ambari-metrics-collector
-           - ambari-metrics-monitor
-           - ambari-metrics-grafana
-           - ambari-metrics-hadoop-sink
-           - ambari-infra-solr
-           - ambari-infra-solr-client
-           - ambari-logsearch-portal
-           - ambari-logsearch-logfeeder
-    - include: ../roles/ambari-agent/tasks/start.yml
+    - import_tasks: ../roles/ambari-agent/tasks/stop.yml
+
+- hosts: ambari-server ambari-agent
+  become: true
+  tasks:
+    - include_tasks: ../roles/ambari-common/tasks/upgrade-packages-{{ ansible_os_family }}.yml
+
+- hosts: ambari-server
+  tasks:
+    - include_tasks: ../roles/ambari-server/tasks/upgrade.yml
+    - include_tasks: ../roles/ambari-server/tasks/start.yml
+
+- hosts: ambari-agent
+  tasks:
+    - include_tasks: ../roles/ambari-agent/tasks/start.yml

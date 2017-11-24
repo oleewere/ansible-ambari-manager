@@ -1,3 +1,6 @@
-- name: Ambari-Agent start
+- include_tasks: ../roles/ambari-agent/tasks/status.yml
+
+- name: Start ambari-agent
   become: true
-  action: shell ambari-agent start
+  shell: ambari-agent start
+  when: ambari_agent_status.rc > 0

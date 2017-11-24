@@ -1,0 +1,6 @@
+- name: Install ambari-server
+  become: true
+  apt:
+    name: ambari-server
+    state: latest
+    update_cache: true

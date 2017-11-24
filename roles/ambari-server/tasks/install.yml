@@ -1,6 +1,0 @@
-- name: Ambari-Server yum install
-  become: true
-  yum:
-      name: ambari-server
-      state: latest
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

@@ -1,0 +1,4 @@
+- name: Check if ambari-agent is running
+  command: ambari-agent status
+  register: ambari_agent_status
+  failed_when: "'command not found' in ambari_agent_status.stderr"

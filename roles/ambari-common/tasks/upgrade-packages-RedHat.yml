@@ -1,0 +1,16 @@
+- name: Upgrade Ambari packages
+  become: true
+  shell: rpm -q {{ item }} && /usr/bin/yum upgrade -y {{ item }}
+  ignore_errors: yes
+  with_items:
+    - ambari-agent
+    - ambari-infra-solr
+    - ambari-infra-solr-client
+    - ambari-logsearch-logfeeder
+    - ambari-logsearch-portal
+    - ambari-metrics-collector
+    - ambari-metrics-grafana
+    - ambari-metrics-hadoop-sink
+    - ambari-metrics-monitor
+    - ambari-server
+

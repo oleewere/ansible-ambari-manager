@@ -1,20 +1,27 @@
+- hosts: ambari-server ambari-agent
+  become: true
+  vars:
+    ambari_version: 3.0.0.0
+    ambari_build_number: 1234 # should be overridden via extra_vars
+    ambari_base_version: "{{ ambari_version[0] }}.x"
+  tasks:
+    - include_vars: file="../vars/{{ ansible_distribution }}.yml"
+    - include_vars: file="../roles/ambari-common/vars/ambari-dev-repo-root.yml"
+      when: ambari_repo_root is not defined
+    - include_vars: file="../roles/ambari-common/vars/ambari-dev-repo-base-url.yml"
+      when: ambari_repo_base_url is not defined
+    - include_tasks: ../roles/ambari-common/tasks/install-repo-{{ ansible_os_family }}.yml
+
 - hosts: ambari-server
   become: true
-  vars:
-    ambari_base_version: 3.x
-    ambari_version: 3.0.0.0
   tasks:
-    - include: ../roles/ambari-common/tasks/install-dev-yum-repo.yml
-    - include: ../roles/ambari-server/tasks/install.yml
-    - include: ../roles/ambari-server/tasks/setup.yml
-    - include: ../roles/ambari-server/tasks/start.yml
+    - include_tasks: ../roles/ambari-server/tasks/install-{{ ansible_os_family }}.yml
+    - import_tasks: ../roles/ambari-server/tasks/setup.yml
+    - import_tasks: ../roles/ambari-server/tasks/start.yml
+
 - hosts: ambari-agent
   become: true
-  vars:
-    ambari_base_version: 3.x
-    ambari_version: 3.0.0.0
   tasks:
-    - include: ../roles/ambari-common/tasks/install-dev-yum-repo.yml
-    - include: ../roles/ambari-agent/tasks/install.yml
-    - include: ../roles/ambari-agent/tasks/setup.yml
-    - include: ../roles/ambari-agent/tasks/start.yml
+    - include_tasks: ../roles/ambari-agent/tasks/install-{{ ansible_os_family }}.yml
+    - import_tasks: ../roles/ambari-agent/tasks/setup.yml
+    - import_tasks: ../roles/ambari-agent/tasks/start.yml

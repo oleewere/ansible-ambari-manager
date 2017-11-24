@@ -1,3 +1,6 @@
+- include_tasks: ../roles/ambari-server/tasks/status.yml
+
 - name: Ambari-Server setup
   become: true
-  action: shell ambari-server setup -s
+  command: ambari-server setup -s
+  when: ambari_server_status.rc > 0

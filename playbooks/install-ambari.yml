@@ -1,14 +1,22 @@
+# requires variables:
+# - ambari_repo_base_url
+# - ambari_version
+
+- hosts: ambari-server ambari-agent
+  become: true
+  tasks:
+    - include_tasks: ../roles/ambari-common/tasks/install-repo-{{ ansible_os_family }}.yml
+
 - hosts: ambari-server
   become: true
   tasks:
-    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
-    - include: ../roles/ambari-server/tasks/install.yml
-    - include: ../roles/ambari-server/tasks/setup.yml
-    - include: ../roles/ambari-server/tasks/start.yml
+    - include_tasks: ../roles/ambari-server/tasks/install-{{ ansible_os_family }}.yml
+    - import_tasks: ../roles/ambari-server/tasks/setup.yml
+    - import_tasks: ../roles/ambari-server/tasks/start.yml
+
 - hosts: ambari-agent
   become: true
   tasks:
-    - include: ../roles/ambari-common/tasks/install-yum-repo.yml
-    - include: ../roles/ambari-agent/tasks/install.yml
-    - include: ../roles/ambari-agent/tasks/setup.yml
-    - include: ../roles/ambari-agent/tasks/start.yml
+    - include_tasks: ../roles/ambari-agent/tasks/install-{{ ansible_os_family }}.yml
+    - import_tasks: ../roles/ambari-agent/tasks/setup.yml
+    - import_tasks: ../roles/ambari-agent/tasks/start.yml

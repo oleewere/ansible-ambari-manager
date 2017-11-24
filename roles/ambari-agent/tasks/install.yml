@@ -1,6 +1,0 @@
-- name: Ambari-Agent yum install
-  become: true
-  yum:
-      name: ambari-agent
-      state: latest
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
