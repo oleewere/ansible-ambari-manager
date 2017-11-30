@@ -1,0 +1,1 @@
+ambari_repo_base_url: "http://{{ ambari_repo_root }}/ambari/{{ ambari_os }}/{{ ambari_base_version }}/BUILDS/{{ ambari_version }}-{{ ambari_build_number }}"

@@ -1,0 +1,18 @@
+- name: Add Hortonworks APT key
+  become: true
+  apt_key:
+    id: B9733A7A07513CAD
+    keyserver: keyserver.ubuntu.com
+
+- name: Remove previous repository
+  become: true
+  file: path=/etc/apt/sources.list.d/ambari.list state=absent
+
+- name: Add Ambari repository
+  become: true
+  apt_repository:
+    repo: "deb {{ ambari_repo_base_url }} Ambari main"
+    filename: ambari
+    state: present
+    update_cache: true
+  when: ambari_repo_base_url is defined

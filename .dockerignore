@@ -1,0 +1,9 @@
+*.swp
+.dockerignore
+.git
+.gitignore
+Dockerfile
+LICENSE
+README.md
+docker-compose.yml
+hosts.sample

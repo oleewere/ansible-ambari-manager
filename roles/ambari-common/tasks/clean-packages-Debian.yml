@@ -1,0 +1,3 @@
+- name: Clean packages
+  become: true
+  apt: autoclean=true autoremove=true update_cache=true

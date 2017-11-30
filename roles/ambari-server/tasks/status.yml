@@ -1,0 +1,4 @@
+- name: Check if ambari-server is running
+  command: ambari-server status
+  register: ambari_server_status
+  failed_when: "'command not found' in ambari_server_status.stderr"

@@ -1,4 +1,6 @@
-- name: Ambari-Server start
+- include_tasks: ../roles/ambari-server/tasks/status.yml
+
+- name: Start ambari-server
   become: true
-  action: shell ambari-server start
-  ignore_errors: yes
+  command: ambari-server start
+  when: ambari_server_status.rc > 0

@@ -1,0 +1,6 @@
+- name: Install ambari-agent
+  become: true
+  apt:
+    name: ambari-agent
+    state: latest
+    update_cache: true
