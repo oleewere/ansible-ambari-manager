@@ -43,6 +43,14 @@ ansible -i hosts ambari-server -m shell -a "echo hello"
 ansible-playbook -i hosts.sample playbooks/install-ambari-2_6.yml --extra-vars "ambari_build_number=103"
 ```
 
+### Install Ambari 2.6 to be run as non-root user:
+
+```bash
+ansible-playbook playbooks/install-ambari-2_6.yml --extra-vars "remote_ambari_server_user=ambari-server remote_ambari_agent_user=ambari-agent"
+```
+
+(`libselinux-python` may be required if using SELinux)
+
 ### Setup Kerberos:
 ```bash
 ansible-playbook -i hosts.sample playbooks/setup-kerberos.yml --extra-vars "kerberos_domain_realm=ambari.apache.org"

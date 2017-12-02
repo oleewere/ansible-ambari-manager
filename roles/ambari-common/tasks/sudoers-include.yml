@@ -1,0 +1,11 @@
+- name: Create sudoers.d
+  become: true
+  file: path=/etc/sudoers.d state=directory mode=0755
+
+- name: Include sudoers.d
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '#includedir /etc/sudoers.d'
+    validate: '/usr/sbin/visudo -cf %s'
