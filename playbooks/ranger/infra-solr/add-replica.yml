@@ -1,0 +1,9 @@
+- hosts: ranger-admin # TODO: only works if you have a solr on your ranger admin host
+  become: true
+  become_user: infra-solr
+  vars:
+    shard: "{{ shard_name }}" # e.g.: shard1_1
+    node: "{{ node_name }}"  # e.g.: c6401.ambari.apache.org:8886_solr
+  tasks:
+    - name: "Add a shard replica to a node"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections?action=ADDREPLICA&collection=ranger_audits&shard={{ shard }}&node={{ node }}'"

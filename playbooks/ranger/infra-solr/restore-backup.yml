@@ -1,0 +1,6 @@
+- hosts: ranger-solr
+  become: true
+  become_user: infra-solr
+  tasks:
+    - name: "Create ranger collection backup"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/ranger_audits/replication?command=restore&location=/tmp/ranger-backup&name=ranger'"

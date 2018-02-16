@@ -1,0 +1,6 @@
+- hosts: ranger-solr
+  become: true
+  become_user: infra-solr
+  tasks: # TODO: set java home properly
+   - name: Upgrade Index to version 6.6.0
+     action: "shell export JAVA_HOME=/usr/jdk64/jdk1.8.0_112/ && infra-lucene-index-tool upgrade-index -d /tmp/ranger-backup -b -f -g > /tmp/ranger-upgrade-index.out"

@@ -1,0 +1,12 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+   - include_role:
+       name: ambari-server
+       tasks_from: run-configs-command
+     vars:
+       command_type: "set"
+       configs_action: "set"
+       configs_type: "infra-solr-security-json"
+       configs_key: "content"
+       additional_params: "-v '{\"authentication\":{\"class\": \"org.apache.solr.security.KerberosPlugin\"}}}'"

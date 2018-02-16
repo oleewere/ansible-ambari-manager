@@ -1,0 +1,6 @@
+- hosts: ranger-admin # TODO: only works if you have a solr on your ranger admin host
+  become: true
+  become_user: infra-solr
+  tasks:
+    - name: "Split shard collection"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections?collection=ranger_audits&shard={{ shard_name }}&action=SPLITSHARD&async=1000&wt=json'"

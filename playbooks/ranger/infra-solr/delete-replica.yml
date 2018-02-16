@@ -1,0 +1,10 @@
+- hosts: ranger-admin # TODO: only works if you have a solr on your ranger admin host
+  become: true
+  become_user: infra-solr
+  vars:
+    shard: "{{ shard_name }}" # e.g.: shard1_1
+    node: "{{ node_name }}"  # e.g.: c6401.ambari.apache.org:8886_solr
+    replica: "{{ replica_name }}"  # e.g.: core_node6
+  tasks:
+    - name: "Delete replica"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections?action=DELETEREPLICA&collection=ranger_audits&shard={{ shard }}&replica={{ replica }}'"
