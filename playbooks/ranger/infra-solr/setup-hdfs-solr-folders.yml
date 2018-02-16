@@ -1,0 +1,6 @@
+- hosts: "{{hdfs_client_hostname}}"
+  become: true
+  become_user: hdfs
+  tasks:
+    - name: "Create infra-solr hdfs folders"
+      action: "shell kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs-cl1@AMBARI.APACHE.ORG && hdfs dfs -mkdir /user/infra-solr && hdfs dfs -mkdir /user/infra-solr/solr-index && hdfs dfs -mkdir /user/infra-solr/repo && hdfs dfs -chown infra-solr:hdfs /user/infra-solr && hdfs dfs -chown infra-solr:hdfs /user/infra-solr/repo && hdfs dfs -chown infra-solr:hdfs /user/infra-solr/solr-index"
