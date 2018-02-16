@@ -1,0 +1,12 @@
+- hosts: "{{zookeeper_hostname}}" # TODO, only works if there is an infra-solr user on zookeper host
+  become: true
+  become_user: infra-solr
+  tasks:
+    - name: "Clean infra-solr znode" # TODO specify JAVA_HOME
+      action: "shell export JAVA_HOME=/usr/jdk64/jdk1.8.0_112 && kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f)@AMBARI.APACHE.ORG && zookeeper-client -server c6402.ambari.apache.org:2181 rmr /infra-solr"
+- hosts: ranger-solr
+  become: true
+  become_user: infra-solr
+  tasks:
+    - name: "Delete index directories"
+      action: "shell rm -rf /opt/ambari_infra_solr/data/ranger* && rm -rf /opt/ambari_infra_solr/data/hadoop* && rm -rf /opt/ambari_infra_solr/data/audit* && rm -rf /opt/ambari_infra_solr/data/history*"
