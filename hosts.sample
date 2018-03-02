@@ -24,6 +24,7 @@ kerberos_service_user=infra-solr
 kerberos_service_host=c6401.ambari.apache.org
 
 local_ambari_location=/Users/oszabo/prj/ambari
+local_hdp_stack_location=/Users/oszabo/prj/hdp_ambari_definitions/src/main/resources
 
 ranger_zookeeper_quorum=localhost:2181
 ranger_sam_password=sam-password

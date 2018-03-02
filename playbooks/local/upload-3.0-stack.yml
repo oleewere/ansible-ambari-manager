@@ -1,0 +1,31 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Create tar gz from common-services and stacks
+      action: shell cd {{ local_hdp_stack_location }}/stacks/HDP && tar -czf /tmp/upload-stack.tgz 3.0
+      when: stack_service is not defined
+    - name: Create tar gz from common-services and stacks with one stack service
+      action: shell cd {{ local_hdp_stack_location }}/stacks/HDP && find . -name "*{{ stack_service }}*" | xargs tar cvfz /tmp/upload-stack.tgz
+      when: stack_service is defined
+- hosts: ambari-server
+  become: true
+  tasks:
+    - name: Backup old ambari stack
+      action: shell rm -rf /tmp/ambari-server-stacks-backup/ && mkdir -p /tmp/ambari-server-stacks-backup/ && mv /var/lib/ambari-server/resources/stacks/HDP/3.0 /tmp/ambari-server-stacks-backup/stacks
+      ignore_errors: yes
+      when: stack_service is not defined
+    - name: Backup old ambari stack service
+      action: shell rm -rf /tmp/ambari-server-stacks-backup/ && mkdir -p /tmp/ambari-server-stacks-backup && cd /var/lib/ambari-server/resources/stacks/HDP/3.0 && find . -name "**{{ stack_service }}**" -print0 | cpio -dumpl0 /tmp/ambari-server-stacks-backup/
+      ignore_errors: yes
+      when: stack_service is defined
+    - name: Extract upload-stack.tgz into /var/lib/ambari-server/resources/stacks/HDP/
+      unarchive:
+        src: /tmp/upload-stack.tgz
+        dest: /var/lib/ambari-server/resources/stacks/HDP/
+        owner: "{{ remote_ambari_server_user }}"
+        group: "{{ remote_ambari_server_group }}"
+    - include: ../../roles/ambari-server/tasks/restart.yml
+- hosts: ambari-agent
+  become: true
+  tasks:
+    - include: ../../roles/ambari-agent/tasks/restart.yml
