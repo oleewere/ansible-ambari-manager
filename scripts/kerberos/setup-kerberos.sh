@@ -59,6 +59,13 @@ start_kdc() {
   chkconfig kadmin on
 }
 
+start_kdc_centos7() {
+  systemctl start krb5kdc.service
+  systemctl start kadmin.service
+  systemctl enable krb5kdc.service
+  systemctl enable kadmin.service
+}
+
 create_admin_user() {
   kadmin.local -q "addprinc -pw $KERB_ADMIN_PASS $KERB_ADMIN_USER/admin"
   echo "*/admin@$REALM *" > /var/kerberos/krb5kdc/kadm5.acl
@@ -72,4 +79,4 @@ sed 's/""/"-r \/dev\/urandom"/' -i /etc/sysconfig/rngd
 create_config
 create_db
 create_admin_user
-start_kdc
+start_kdc || start_kdc_centos7
