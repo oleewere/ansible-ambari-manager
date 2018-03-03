@@ -79,4 +79,4 @@ sed 's/""/"-r \/dev\/urandom"/' -i /etc/sysconfig/rngd
 create_config
 create_db
 create_admin_user
-start_kdc || start_kdc_centos7
+start_kdc && echo "Kerberos Install finished" ||  start_kdc_centos7
