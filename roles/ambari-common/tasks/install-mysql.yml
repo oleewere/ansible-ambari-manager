@@ -3,6 +3,19 @@
   yum:
     name: mysql-server
     state: latest
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version <= '7.0'
+- name: install the MariaDB Server
+  become: true
+  yum:
+    name: mariadb-server
+    state: latest
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version >= '7.0'
+- name: install the MariaDB
+  become: true
+  yum:
+    name: mariadb
+    state: latest
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version >= '7.0'
 - name: Creates MySQL connector directory
   file: path=/opt/mysql-connectors state=directory
 - name: install MySQL Java connector
@@ -13,3 +26,10 @@
   service:
     name: mysqld
     state: started
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version <= '7.0'
+- name: MariaDB Start
+  become: true
+  service:
+    name: mariadb
+    state: started
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version >= '7.0'
