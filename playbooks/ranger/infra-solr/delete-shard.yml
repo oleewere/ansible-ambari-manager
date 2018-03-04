@@ -3,4 +3,4 @@
   become_user: infra-solr
   tasks:
     - name: "Delete shard from collection"
-      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections??action=DELETESHARD&shard={{ shard_name }}&collection=ranger_audits'"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections?action=DELETESHARD&shard={{ shard_name }}&collection=ranger_audits'"
