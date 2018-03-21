@@ -4,6 +4,10 @@
 
 - hosts: ambari-server ambari-agent
   become: true
+  vars_prompt:
+    - name: "ambari_repo_base_url"
+      prompt: "Set ambari repo base url"
+      private: no
   tasks:
     - include_tasks: ../roles/ambari-common/tasks/install-repo-{{ ansible_os_family }}.yml
 
