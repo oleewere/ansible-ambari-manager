@@ -21,7 +21,7 @@
     "name": "slave",
     "components": [
 {% set slave_components_list = bp_slave_components.split(',') %}
-{% for slave_component in master_components_list %}
+{% for slave_component in slave_components_list %}
      {
        "name": "{{slave_component}}"
      },
