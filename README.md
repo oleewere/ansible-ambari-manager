@@ -5,7 +5,7 @@
 
 ## Requirements:
 
-Install ansible (2.x) 
+Install ansible (2.4.x -) 
 ```bash
 pip install ansible
 ```
