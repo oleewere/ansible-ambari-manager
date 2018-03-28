@@ -18,6 +18,6 @@
         owner: "{{ remote_ambari_server_user }}"
         group: "{{ remote_ambari_server_group }}"
         mode: 0777
-     - include_role:
+    - include_role:
         name: ambari-server
         tasks_from: post-cluster
