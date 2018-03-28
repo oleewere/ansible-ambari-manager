@@ -67,6 +67,53 @@ ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extr
 ```bash
 ansible-playbook -i hosts.sample playbooks/upgrade-ambari-packages.yml -v --extra-vars "ambari_base_url=http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/2.x/BUILDS/2.6.0.0-113 ambari_version=2.6.0.0 ambari_build_number=113 skip_ambari_server_upgrade_command=True"
 ```
+
+### Install Ambari from base repo url
+```bash
+# it will ask ambari_repo_base_url parameter with a prompt (value can be like: http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos7/2.x/BUILDS/2.7.0.0-180)
+ansible-playbook -i hosts.sample playbooks/install-ambari.yml
+```
+
+### Install Ambari cluster with blueprint
+
+```bash
+ansible-playbook -i hosts.sample playbooks/blueprint/install-cluster.yml
+```
+Right now there are 2 host groups: master and slave, you can control those with 2 ansible groups like that:
+```bash
+[bp-master-host-group]
+c6401.ambari.apache.org
+
+[bp-slave-host-group]
+c6402.ambari.apache.org
+c6403.ambari.apache.org
+```
+You can specify the master and slave components as well with comma separated lists (ZOOKEEPER_SERVER for master and ZOOKEEPER_CLIENT for slave are defaults + Ranger added differently)
+```bash
+bp_master_components=INFRA_SOLR,INFRA_SOLR_CLIENT
+bp_slave_components=INFRA_SOLR_CLIENT
+```
+
+### Install Ambari cluster with blueprint + kerberos
+
+```bash
+ansible-playbook -i hosts.sample playbooks/blueprint/install-secure-cluster.yml
+```
+
+Make sure you defined the following variables:
+```bash
+kerberos_realm=AMBARI.APACHE.ORG
+kerberos_domain_realm=ambari.apache.org
+kdc_hostname=c7401.ambari.apache.org
+```
+
+### Install Ambari cluster with blueprint + kerberos + Ranger
+
+```bash
+ansible-playbook -i hosts.sample playbooks/blueprint/install-ranger-cluster.yml
+```
+Note: Ranger Admin will be installed on Ambari Server host.
+
 ### Local kinit to access Kerberized Solr UI from browsers
 ```bash
 # important parameters: (you can set as --extra-vars or in the inventory file)
