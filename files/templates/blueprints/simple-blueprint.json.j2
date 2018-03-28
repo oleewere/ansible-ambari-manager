@@ -1,4 +1,28 @@
 {
+  "configurations" : [
+{% if secure_cluster is defined %}
+   {
+      "kerberos-env": {
+        "properties_attributes" : { },
+        "properties" : {
+          "realm" : "{{kerberos_realm}}",
+          "kdc_type" : "mit-kdc",
+          "kdc_hosts" : "{{kdc_hostname}}",
+          "admin_server_host" : "{{kdc_hostname}}"
+         }
+       }
+    },
+    {
+      "krb5-conf": {
+        "properties_attributes" : { },
+        "properties" : {
+          "domains" : "{{kerberos_domain_realm}},.{{kerberos_domain_realm}}",
+          "manage_krb5_conf" : "true"
+         }
+      }
+    }
+{% endif %}
+  ],
   "host_groups": [
   {
     "name": "master",
@@ -35,6 +59,8 @@
  "Blueprints": {
         "blueprint_name": "myblueprint",
         "stack_name": "{{stack_name|default('HDP')}}",
-        "stack_version": "{{stack_version|default('3.0')}}"
+        "stack_version": "{{stack_version|default('3.0')}}"{% if secure_cluster is defined %},
+        "security" : { "type" : "KERBEROS" }
+{% endif %}
   }
 }

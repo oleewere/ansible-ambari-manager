@@ -61,11 +61,23 @@ create_admin_user() {
   echo "*/admin@$REALM *" > /var/kerberos/krb5kdc/kadm5.acl
 }
 
+echo "Entropy before installing RNG tools"
+cat /proc/sys/kernel/random/entropy_avail
+
+# Install packages
+echo "Installing RNG tools"
+yum install -y rng-tools
+chkconfig rngd on
+service rngd start
+
+echo "Entropy after installing  RNG tools"
+cat /proc/sys/kernel/random/entropy_avail
+
+echo "Installing Kerberos Packages"
+yum install -y krb5-server krb5-libs krb5-workstation
+
 mkdir -p /var/log/kerberos/
-yum install krb5-server krb5-libs krb5-auth-dialog krb5-workstation -y
-yum install rng-tools -y
-sed 's/""/"-r \/dev\/urandom"/' -i /etc/sysconfig/rngd
-/etc/init.d/rngd start
+
 create_config
 create_db
 create_admin_user

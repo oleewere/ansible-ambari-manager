@@ -1,6 +1,18 @@
 {
   "blueprint" : "myblueprint",
   "default_password" : "admin",
+  "config_recommendation_strategy" : "ALWAYS_APPLY_DONT_OVERRIDE_CUSTOM_VALUES",
+{% if secure_cluster is defined %}
+  "credentials" : [
+     {
+       "alias" : "kdc.admin.credential",
+       "principal" : "admin/admin",
+       "key" : "admin",
+       "type" : "TEMPORARY"
+     }
+   ],
+  "security" : { "type" : "KERBEROS" },
+{% endif %}
   "host_groups" :[
 {% if groups['bp-master-host-group']|length > 0 %}
     {

@@ -1,0 +1,26 @@
+- include: ../setup-kerberos.yml
+- hosts: ambari-server
+  become: true
+  vars:
+    - secure_cluster: True
+  tasks:
+    - name: Generate blueprint (with kerberos)
+      template:
+        src: "../../files/templates/blueprints/{{blueprint_template_name|default('simple-blueprint.json.j2')}}"
+        dest: "/tmp/myblueprint.json"
+        owner: "{{ remote_ambari_server_user }}"
+        group: "{{ remote_ambari_server_group }}"
+        mode: 0777
+    - include_role:
+        name: ambari-server
+        tasks_from: post-blueprint
+    - name: Generate cluster creation template (with kerberos)
+      template:
+        src: "../../files/templates/blueprints/{{cluster_template_name|default('simple-cluster.json.j2')}}"
+        dest: "/tmp/mycluster.json"
+        owner: "{{ remote_ambari_server_user }}"
+        group: "{{ remote_ambari_server_group }}"
+        mode: 0777
+    - include_role:
+        name: ambari-server
+        tasks_from: post-cluster
