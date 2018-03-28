@@ -21,6 +21,34 @@
          }
       }
     }
+{% endif %}{% if ranger_admin_included is defined %}
+{% if secure_cluster is defined %}
+    ,
+{% endif %}
+   {
+     "admin-properties" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "db_root_user" : "rangerdba",
+          "db_root_password" : "rangerdba",
+          "db_host": "localhost",
+          "db_password": "root"
+         }
+      }
+   },
+   {
+      "ranger-env": {
+        "properties_attributes" : { },
+        "properties" : {
+          "is_solrCloud_enabled" : "true",
+          "admin_password": "admin",
+          "ranger_admin_password" : "admin",
+          "rangerusersync_user_password" : "admin",
+          "rangertagsync_user_password" : "admin",
+          "keyadmin_user_password" : "admin"
+         }
+      }
+    }
 {% endif %}
   ],
   "host_groups": [
@@ -32,7 +60,17 @@
      {
        "name": "{{master_component}}"
      },
-{% endfor %}
+{% endfor %}{% if ranger_admin_included is defined %}
+     {
+       "name": "RANGER_ADMIN"
+     },
+     {
+       "name": "RANGER_USERSYNC"
+     },
+     {
+       "name": "RANGER_TAGSYNC"
+     },
+{% endif %}
      {
        "name": "ZOOKEEPER_SERVER"
      },
@@ -49,7 +87,11 @@
      {
        "name": "{{slave_component}}"
      },
-{% endfor %}
+{% endfor %}{% if ranger_admin_included is defined %}
+     {
+       "name": "RANGER_TAGSYNC"
+     },
+{% endif %}
      {
        "name": "ZOOKEEPER_CLIENT"
      }
