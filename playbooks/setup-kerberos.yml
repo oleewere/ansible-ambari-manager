@@ -7,4 +7,11 @@
     environment:
       REALM: "{{ kerberos_realm | default('EXAMPLE.COM') }}"
       DOMAIN_REALM: "{{ kerberos_domain_realm }}"
-    when: kerberos_domain_realm is defined
+    when: kerberos_domain_realm is defined and ansible_distribution == 'CentOS' and ansible_distribution_version <= '7.0'
+  - include: ../roles/ambari-server/tasks/run-script.yml
+    vars:
+      script_location: ../../../scripts/kerberos/setup-kerberos-centos7.sh
+    environment:
+      REALM: "{{ kerberos_realm | default('EXAMPLE.COM') }}"
+      DOMAIN_REALM: "{{ kerberos_domain_realm }}"
+    when: kerberos_domain_realm is defined and ansible_distribution == 'CentOS' and ansible_distribution_version >= '7.0'

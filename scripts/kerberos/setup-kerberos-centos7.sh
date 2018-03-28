@@ -48,14 +48,12 @@ create_db() {
   /usr/sbin/kdb5_util -P $KERB_MASTER_KEY -r $REALM create -s
 }
 
-start_kdc() {
+start_kdc_centos7() {
   mkdir -p /var/log/kerberos
-
-  /etc/rc.d/init.d/krb5kdc start
-  /etc/rc.d/init.d/kadmin start
-
-  chkconfig krb5kdc on
-  chkconfig kadmin on
+  systemctl start krb5kdc.service
+  systemctl start kadmin.service
+  systemctl enable krb5kdc.service
+  systemctl enable kadmin.service
 }
 
 create_admin_user() {
@@ -71,4 +69,4 @@ sed 's/""/"-r \/dev\/urandom"/' -i /etc/sysconfig/rngd
 create_config
 create_db
 create_admin_user
-start_kdc
+start_kdc_centos7
