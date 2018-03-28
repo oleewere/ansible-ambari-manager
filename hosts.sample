@@ -10,11 +10,21 @@ c6401.ambari.apache.org
 [ranger-solr]
 c6401.ambari.apache.org
 
+[bp-master-host-group]
+c6401.ambari.apache.org
+
+[bp-slave-host-group]
+c6402.ambari.apache.org
+
+
 [all:vars]
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ambari_build_number=103
+
+bp_master_components=INFRA_SOLR,INFRA_SOLR_CLIENT
+bp_slave_components=INFRA_SOLR_CLIENT
 
 kerberos_realm=EXAMPLE.COM
 kerberos_domain_realm=ambari.apache.org

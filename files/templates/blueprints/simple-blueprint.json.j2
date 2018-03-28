@@ -1,0 +1,40 @@
+{
+  "host_groups": [
+  {
+    "name": "master",
+    "components": [
+{% set master_components_list = bp_master_components.split(',') %}
+{% for master_component in master_components_list %}
+     {
+       "name": "{{master_component}}"
+     },
+{% endfor %}
+     {
+       "name": "ZOOKEEPER_SERVER"
+     },
+     {
+       "name": "ZOOKEEPER_CLIENT"
+     }
+    ]
+  },
+  {
+    "name": "slave",
+    "components": [
+{% set slave_components_list = bp_slave_components.split(',') %}
+{% for slave_component in master_components_list %}
+     {
+       "name": "{{slave_component}}"
+     },
+{% endfor %}
+     {
+       "name": "ZOOKEEPER_CLIENT"
+     }
+    ]
+   }
+ ],
+ "Blueprints": {
+        "blueprint_name": "myblueprint",
+        "stack_name": "{{stack_name|default('HDP')}}",
+        "stack_version": "{{stack_version|default('3.0')}}"
+  }
+}

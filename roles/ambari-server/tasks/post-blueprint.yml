@@ -1,0 +1,3 @@
+- name: "Post Blueprint ..."
+  become: true
+  action: "shell sudo curl -X POST -v -k -u {{ ambari_username }}:{{ ambari_password }} -H 'X-Requested-By: ambari' {{ ambari_protocol }}://{{ groups[['ambari-server'][0]][0] }}:{{ ambari_port }}/api/v1/blueprints/myblueprint?validate_topology=false -d /tmp/myblueprint.json"

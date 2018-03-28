@@ -1,0 +1,43 @@
+{
+  "blueprint" : "myblueprint",
+  "default_password" : "admin",
+  "host_groups" :[
+{% if groups['bp-master-host-group']|length > 0 %}
+    {
+      "name" : "master",
+      "hosts" : [
+{% for host in groups['bp-master-host-group'] %}
+{% if loop.index == loop.length %}
+       {
+         "fqdn" : "{{host}}"
+       }
+{% else %}
+       {
+         "fqdn" : "{{host}}"
+       },
+{% endif %}
+{% endfor %}
+      ]
+    }{% if groups['bp-slave-host-group']|length > 0 %},
+{% endif %}
+{% endif %}
+{% if groups['bp-slave-host-group']|length > 0 %}
+    {
+      "name" : "slave",
+      "hosts" : [
+{% for host in groups['bp-slave-host-group'] %}
+{% if loop.index == loop.length %}
+       {
+         "fqdn" : "{{host}}"
+       }
+{% else %}
+       {
+         "fqdn" : "{{host}}"
+       },
+{% endif %}
+{% endfor %}
+      ]
+    }
+{% endif %}
+   ]
+}
