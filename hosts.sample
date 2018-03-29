@@ -23,8 +23,8 @@ ansible_ssh_private_key_file=~/prj/ambari-vagrant/insecure_private_key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ambari_build_number=103
 
-bp_master_components=INFRA_SOLR,INFRA_SOLR_CLIENT
-bp_slave_components=INFRA_SOLR_CLIENT
+bp_master_components=INFRA_SOLR_CLIENT
+bp_slave_components=INFRA_SOLR_CLIENT,INFRA_SOLR
 
 kerberos_realm=EXAMPLE.COM
 kerberos_domain_realm=ambari.apache.org
@@ -39,7 +39,7 @@ local_hdp_stack_location=/Users/oszabo/prj/hdp_ambari_definitions/src/main/resou
 ranger_zookeeper_quorum=localhost:2181
 ranger_sam_password=sam-password
 ranger_tom_password=tom-password
-ranger_admin_password=admin-password
+ranger_admin_password=admin
 
 ranger_admin_host=localhost
 
@@ -62,6 +62,9 @@ ranger_yarn_userlist=ambari-qa,yarn
 
 ranger_scale_test_folder=/opt
 ranger_scale_test_hostname=localhost
+
+solr_server_host=c6402.ambari.apache.org
+solr_server_port=8886
 
 [kinit_host]
 c6401.ambari.apache.org
