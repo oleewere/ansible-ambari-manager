@@ -1,5 +1,5 @@
 [host]
-ip_address = {{ ansible_eth0.ipv4.address }}
+ip_address = {{ inventory_hostname }}
 
 [cluster]
 cluster_name = {{ ambari_cluster }}
