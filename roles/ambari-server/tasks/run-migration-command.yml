@@ -1,0 +1,3 @@
+- name: "Run /usr/lib/ambari-infra-solr-client script/migrationHelper.py for {{ migration_collection }}"
+  become: true
+  action: "shell /usr/lib/ambari-infra-solr-client/migrationHelper.py -H {{ inventory_hostname }} -P {{ ambari_port }} -c {{ ambari_cluster }} -u {{ ambari_username }} -p {{ ambari_password }} --action {{ migration_action }} --collection {{ migration_collection }} {{ migration_additional_params }}"

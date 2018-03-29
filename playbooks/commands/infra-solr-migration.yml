@@ -1,0 +1,31 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: install ambari-infra-solr-client if it is required
+    yum:
+      name: ambari-infra-solr-client
+      state: latest
+  - name: "Backup Solr Collection ..."
+    include_role:
+      name: ambari-server
+      tasks_from: run-migration-command
+    vars:
+      migration_collection: "{{ collection|default('ranger_audits') }}"
+      migration_additional_params: "--backup-name {{ backup_name|default('ranger_audits') }} --index-location {{ index_location|default('/tmp/ranger') }}"
+    when: migration_action is defined and migration_action == 'backup'
+  - name: "Migrate Solr Index Data ..."
+    include_role:
+      name: ambari-server
+      tasks_from: run-migration-command
+    vars:
+      migration_collection: "{{ collection|default('ranger_audits') }}"
+      migration_additional_params: "--version {{ lucene_version|default('6.6.2') }} --index-location {{ index_location|default('/tmp/ranger') }}"
+    when: migration_action is defined and migration_action == 'migrate'
+  - name: "Restore Solr Collection ..."
+    include_role:
+      name: ambari-server
+      tasks_from: run-migration-command
+    vars:
+      migration_collection: "{{ collection|default('old_ranger_audits') }}"
+      migration_additional_params: "--backup-name {{ backup_name|default('ranger_audits') }} --index-location {{ index_location|default('/tmp/ranger') }}"
+    when: migration_action is defined and migration_action == 'restore'
