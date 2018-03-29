@@ -1,0 +1,20 @@
+- name: Create group for Ambari Agent
+  become: true
+  group: name={{remote_ambari_agent_group}} state=present
+
+- name: Create user for Ambari Agent
+  become: true
+  user: name={{remote_ambari_agent_user}} group={{remote_ambari_agent_group}} state=present
+
+- include_tasks: ../roles/ambari-common/tasks/sudoers-include.yml
+
+- name: Create Ambari Agent sudoers configuration
+  become: true
+  template: src=../roles/ambari-agent/templates/sudoers.j2 dest=/etc/sudoers.d/ambari-agent mode=0440
+
+- name: Configure Ambari Agent to run as non-root
+  become: true
+  lineinfile:
+    path: /etc/ambari-agent/conf/ambari-agent.ini
+    regexp: '^run_as_user'
+    line: 'run_as_user={{remote_ambari_agent_user}}'

@@ -15,12 +15,16 @@
   become: true
   tasks:
     - include_tasks: ../roles/ambari-server/tasks/install-{{ ansible_os_family }}.yml
-    - import_tasks: ../roles/ambari-server/tasks/setup.yml
+    - import_tasks: ../roles/ambari-server/tasks/sudo.yml
+      when: remote_ambari_server_user != 'root'
+    - import_tasks: ../roles/ambari-server/tasks/setup.yml # must come after sudo stuff
     - import_tasks: ../roles/ambari-server/tasks/start.yml
 
 - hosts: ambari-agent
   become: true
   tasks:
     - include_tasks: ../roles/ambari-agent/tasks/install-{{ ansible_os_family }}.yml
-    - import_tasks: ../roles/ambari-agent/tasks/setup.yml
+    - import_tasks: ../roles/ambari-agent/tasks/setup.yml # must come before sudo stuff
+    - import_tasks: ../roles/ambari-agent/tasks/sudo.yml
+      when: remote_ambari_agent_user != 'root'
     - import_tasks: ../roles/ambari-agent/tasks/start.yml

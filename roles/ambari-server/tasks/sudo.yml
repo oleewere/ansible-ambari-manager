@@ -1,0 +1,20 @@
+- name: Create group for Ambari Server
+  become: true
+  group: name={{remote_ambari_server_group}} state=present
+
+- name: Create user for Ambari Server
+  become: true
+  user: name={{remote_ambari_server_user}} group={{remote_ambari_server_group}} state=present
+
+- include_tasks: ../roles/ambari-common/tasks/sudoers-include.yml
+
+- name: Create Ambari Server sudoers configuration
+  become: true
+  template: src=../roles/ambari-server/templates/sudoers.j2 dest=/etc/sudoers.d/ambari-server mode=0440
+
+- name: Configure Ambari Server to run as non-root
+  become: true
+  lineinfile:
+    path: /etc/ambari-server/conf/ambari.properties
+    regexp: '^ambari-server.user'
+    line: 'ambari-server.user={{remote_ambari_server_user}}'

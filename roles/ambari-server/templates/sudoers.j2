@@ -1,0 +1,6 @@
+# Ambari Commands
+{{remote_ambari_server_user}} ALL=(ALL) NOPASSWD:SETENV: /bin/mkdir -p /etc/security/keytabs, /bin/chmod * /etc/security/keytabs/*.keytab, /bin/chown * /etc/security/keytabs/*.keytab, /bin/chgrp * /etc/security/keytabs/*.keytab, /bin/rm -f /etc/security/keytabs/*.keytab, /bin/cp -p -f /var/lib/ambari-server/data/tmp/* /etc/security/keytabs/*.keytab
+
+Defaults exempt_group = {{remote_ambari_server_user}}
+Defaults !env_reset,env_delete-=PATH
+Defaults: {{remote_ambari_server_user}} !requiretty
