@@ -1,0 +1,10 @@
+- hosts: "{{ solr_host }}"
+  become: true
+  become_user: infra-solr
+  vars_prompt:
+    - name: "collection"
+      prompt: "Name of the new collection"
+      private: no
+  tasks:
+    - name: "Create Solr collection: {{ collection }}"
+      action: "shell kinit -kt /etc/security/keytabs/ambari-infra-solr.service.keytab $(whoami)/$(hostname -f) && curl --negotiate -k -u : 'http://{{ inventory_hostname }}:8886/solr/admin/collections?action=CREATE&name={{ collection }}&numShards=1&replicationFactor=2&maxShardsPerNode=4&collection.configName=ranger_audits'"

@@ -1,4 +1,4 @@
-- hosts: ranger-admin # TODO: only works if you have a solr on your ranger admin host
+- hosts: "{{ solr_host }}"
   become: true
   become_user: infra-solr
   tasks:
