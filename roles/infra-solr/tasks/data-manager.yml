@@ -1,0 +1,3 @@
+- name: "Run infra-solr-data-manager command on collection: {{ data_manager_collection }}"
+  become: true
+  action: "shell nohup infra-solr-data-manager -m {{ data_manager_mode }} -v -c {{ data_manager_collection }} -s {{ data_manager_solr_url }} -z {{ data_manager_compress }} -r {{ data_manager_read }} -w {{ data_manager_write }} -f {{ data_manager_date_field }} -e {{ data_manager_end_date }} --solr-output-collection {{ data_manager_solr_output_collection }} {{ data_manager_additional_params }} > /tmp/solr-data-manager.log 2>&1& echo $! > {{ data_manager_pid|default('/tmp/solr-data-manager.pid')}}"

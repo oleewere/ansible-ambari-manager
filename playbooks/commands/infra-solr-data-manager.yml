@@ -1,0 +1,24 @@
+- hosts: ranger-solr
+  become: true
+  vars_prompt:
+  - name: "data_manager_mode"
+    prompt: "Solr Data Manager Mode (archive | save | delete)"
+    private: no
+  - name: "data_manager_end_date"
+    prompt: "End date (e.g.: 2018-02-18T12:00:00.000Z)"
+    private: no
+  tasks:
+  - name: "Infra Solr Data manager command: {{ data_manager_mode }}"
+    include_role:
+      name: infra-solr
+      tasks_from: data-manager
+    vars:
+      data_manager_solr_url: "http://{{ inventory_hostname }}:8886/solr"
+      data_manager_collection: "{{ collection|default('old_ranger_audits') }}"
+      data_manager_compress: "{{ compress_mode|default('none') }}"
+      data_manager_date_field: "{{ date_field|default('evtTime') }}"
+      data_manager_read: "10000"
+      data_manager_write: "100000"
+      data_manager_solr_output_collection: "{{ solr_output_collection|default('ranger_audits') }}"
+      data_manager_additional_params: "-k /etc/security/keytabs/ambari-infra-solr.service.keytab -n infra-solr/$(hostname -f) --exclude-fields _version_,_ttl_,_expire_at_"
+    when: data_manager_mode is defined and (data_manager_mode == 'save' or data_manager_mode == 'archive' or data_manager_mode == 'delete')
