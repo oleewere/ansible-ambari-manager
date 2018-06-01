@@ -1,0 +1,15 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: "Copy truststore/keystore files"
+    shell: |
+      shost=$(echo `hostname -f` | cut -d . -f 1)
+      mkdir -p {{ ssl_ks_location }}; chmod ugo+rx {{ ssl_ts_location }}
+      mkdir -p {{ ssl_ts_location }}; chmod ugo+rx {{ ssl_ks_location }}
+      cp /var/lib/ambari-server/resources/ssl/truststore.jks {{ ssl_ts_location }}/truststore-ambari.jks
+      cp /var/lib/ambari-server/resources/ssl/keys/$shost.key {{ ssl_ks_location }}/server.key
+      cp /var/lib/ambari-server/resources/ssl/pem/$shost.pem {{ ssl_ks_location }}/server.pem
+  - name: "Setup HTTPS"
+    shell: "ambari-server setup-security --security-option=setup-https --truststore-type=jks --truststore-path={{ ssl_ts_location }}/truststore-ambari.jks --truststore-password={{ ssl_ts_password }} --import-cert-path={{ ssl_ks_location }}/server.pem --import-key-path={{ ssl_ks_location }}/server.key --pem-password='' --api-ssl=true --api-ssl-port=8443"
+  - name: "Restart ambari-server"
+    shell: "ambari-server restart"
