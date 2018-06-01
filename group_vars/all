@@ -11,3 +11,14 @@ remote_ambari_server_user: root
 remote_ambari_server_group: root
 remote_ambari_agent_user: root
 remote_ambari_agent_group: root
+ssl_supported_components: INFRA_SOLR,LOGSEARCH_SERVER,ATLAS_SERVER,RANGER_ADMIN
+ssl_OU: Engineering
+ssl_O: HortonWorks
+ssl_L: Toronto
+ssl_S: Ontario
+ssl_C: CA
+ssl_D: ambari.apache.org
+ssl_ks_location: /etc/security/pki
+ssl_ks_password: MyPass
+ssl_ts_location: /etc/security/pki
+ssl_ts_password: MyPass
