@@ -22,6 +22,7 @@ import urllib2
 import json
 import base64
 import optparse
+import ConfigParser
 
 HTTP_PROTOCOL = 'http'
 HTTPS_PROTOCOL = 'https'
@@ -33,6 +34,8 @@ HOST_COMPONENT_URL = '/hosts/{0}/host_components/{1}'
 GET_HOST_COMPONENTS_URL = '/services/{0}/components/{1}?fields=host_components'
 STACK_CONFIG_DEFAULTS_URL = '/api/v1/stacks/{0}/versions/{1}/services/{2}/configurations?fields=StackConfigurations/type,StackConfigurations/property_value'
 CREATE_CONFIGURATIONS_URL = '/configurations'
+
+GET_ALL_HOST_COMPONENTS_URL = '/host_components'
 
 def api_accessor(host, username, password, protocol, port):
   def do_request(api_url, request_type, request_body=''):
@@ -79,6 +82,30 @@ def create_configs(options, accessor, merged_properties, tag):
     configs_for_posts[config_type] = config
     accessor(CLUSTERS_URL.format(options.cluster) + CREATE_CONFIGURATIONS_URL, 'POST', json.dumps(config))
   return configs_for_posts
+
+def generate_component_hosts_ini(options, accessor):
+  component_hosts_result={}
+  supported_components = options.component_list.split(',')
+  hosts_components_response = get_json(accessor, CLUSTERS_URL.format(options.cluster) + GET_ALL_HOST_COMPONENTS_URL)
+  if 'items' in hosts_components_response and len(hosts_components_response['items']) > 0:
+    for host_role_data in hosts_components_response['items']:
+      host_roles = host_role_data['HostRoles']
+      component_name = host_roles['component_name']
+      if component_name in supported_components:
+        host_name = host_roles['host_name']
+        if component_name not in component_hosts_result:
+          component_hosts_result[component_name]=[]
+        if host_name not in component_hosts_result[component_name]:
+          component_hosts_result[component_name].append(host_name)
+
+  config = ConfigParser.RawConfigParser()
+  for component in component_hosts_result:
+    config.add_section(component)
+    config.set(component, 'hosts', ",".join(component_hosts_result[component]))
+
+  with open(options.ini_file, 'w') as f:
+    config.write(f)
+
 
 def get_stack_default_properties(stack_default_properties_json):
   stack_default_properties = {}
@@ -184,6 +211,8 @@ if __name__=="__main__":
   parser.add_option("--extra-configs", dest="extra_config", type="string", help="configurations to apply with stack defaults")
   parser.add_option("--stack-name", dest="stack_name", default="HDP", type="string", help="name of the stack")
   parser.add_option("--stack-version", dest="stack_version", default="2.6", type="string", help="version of the stack")
+  parser.add_option("--ini-file", dest="ini_file", default="ambari_components.ini", type="string", help="Filename of the generated ini file for host components (default: ambari_components.ini)")
+  parser.add_option("--component-list", dest="component_list", default="INFRA_SOLR,RANGER_ADMIN,ATLAS_SERVER,LOGSEARCH_SERVER", type="string", help="comma separated components")
   (options, args) = parser.parse_args()
 
   accessor = api_accessor(options.host, options.username, options.password, options.protocol, options.port)
@@ -200,6 +229,8 @@ if __name__=="__main__":
     stop_service(options, accessor, parser)
   elif options.action == 'remove':
     remove_service(options, accessor, parser)
+  elif options.action == 'generate-component-hosts':
+    generate_component_hosts_ini(options, accessor)
   else:
     parser.print_help()
     print 'action option is wrong or missing'
