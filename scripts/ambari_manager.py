@@ -18,7 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-import urllib2
+import urllib2, ssl
 import json
 import base64
 import optparse
@@ -45,7 +45,14 @@ def api_accessor(host, username, password, protocol, port):
       if request_body:
         print 'Request body: {0}'.format(request_body)
       admin_auth = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-      request = urllib2.Request(url)
+      request = None
+      if protocol == 'https':
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        request = urllib2.Request(url, context=ctx)
+      else:
+        request = urllib2.Request(url)
       request.add_header('Authorization', 'Basic %s' % admin_auth)
       request.add_header('X-Requested-By', 'ambari')
       request.add_data(request_body)
