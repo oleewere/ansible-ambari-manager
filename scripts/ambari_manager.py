@@ -45,19 +45,19 @@ def api_accessor(host, username, password, protocol, port):
       if request_body:
         print 'Request body: {0}'.format(request_body)
       admin_auth = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-      request = None
-      if protocol == 'https':
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
-        request = urllib2.Request(url, context=ctx)
-      else:
-        request = urllib2.Request(url)
+      request = urllib2.Request(url)
       request.add_header('Authorization', 'Basic %s' % admin_auth)
       request.add_header('X-Requested-By', 'ambari')
       request.add_data(request_body)
       request.get_method = lambda: request_type
-      response = urllib2.urlopen(request)
+      response = None
+      if protocol == 'https':
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        response = urllib2.urlopen(request, context=ctx)
+      else:
+        response = urllib2.urlopen(request)
       response_body = response.read()
     except Exception as exc:
       raise Exception('Problem with accessing api. Reason: {0}'.format(exc))
