@@ -10,6 +10,7 @@
   - file: path=/var/lib/ambari-server/resources/ssl/csr state=absent
   - file: path=/var/lib/ambari-server/resources/ssl/pem state=absent
   - file: path=/var/lib/ambari-server/resources/ssl/truststore.jks state=absent
+  - file: path=/var/lib/ambari-server/resources/ssl/cacerts state=absent
   - name: "Create ca folders"
     file:
       path: "/var/lib/ambari-server/resources/ssl/ca"
@@ -46,7 +47,7 @@
       group: "{{ remote_ambari_server_group }}"
       mode: 0775
   - name: "Generate domain certificate and key"
-    shell: "openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/C={{ ssl_C }}/ST={{ ssl_S }}/L={{ ssl_L }}/O={{ ssl_O }}/CN={{ ssl_D }}' -keyout /var/lib/ambari-server/resources/ssl/{{ ssl_D }}.key  -out /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer"
+    shell: "openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/C={{ ssl_C }}/ST={{ ssl_S }}/L={{ ssl_L }}/O={{ ssl_O }}/CN={{ ssl_D }}' -keyout /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.key  -out /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer"
   - name: "Generate jks file"
     shell: "shost=$(echo {{ item }} | cut -d . -f 1); {{ java_home['stdout'] }}/bin/keytool -genkey -noprompt -alias gateway-identity -keyalg RSA -dname 'CN={{ item }}, OU={{ ssl_OU }}, O={{ ssl_O }}, L={{ ssl_L }}, S={{ ssl_S }}, C={{ ssl_C }}' -keystore /var/lib/ambari-server/resources/ssl/keys/$shost.jks -storepass '{{ ssl_ks_password }}'  -keypass '{{ ssl_ks_password }}'"
     with_items:
@@ -56,7 +57,7 @@
     with_items:
     - "{{ groups['ambari-agent'] }}"
   - name: "Sign csrs"
-    shell: "shost=$(echo {{ item }} | cut -d . -f 1); openssl x509 -req -in /var/lib/ambari-server/resources/ssl/csr/$shost.csr -CA /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer -CAkey /var/lib/ambari-server/resources/ssl/{{ ssl_D }}.key -CAcreateserial -out /var/lib/ambari-server/resources/ssl/cert/$shost.cer -days 1024 -sha256"
+    shell: "shost=$(echo {{ item }} | cut -d . -f 1); openssl x509 -req -in /var/lib/ambari-server/resources/ssl/csr/$shost.csr -CA /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer -CAkey /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.key -CAcreateserial -out /var/lib/ambari-server/resources/ssl/cert/$shost.cer -days 1024 -sha256"
     with_items:
     - "{{ groups['ambari-agent'] }}"
   - name: "Generate Truststore"
@@ -79,9 +80,11 @@
     with_items:
     - "{{ groups['ambari-agent'] }}"
   - name: "Update cacerts"
-    shell: "cp {{ java_home['stdout'] }}/jre/lib/security/cacerts /var/lib/ambari-server/resources/ssl/ ; for cert in `ls /var/lib/ambari-server/resources/ssl/ca/*.cer`; do {{ java_home['stdout'] }}/bin/keytool -importcert -noprompt -file $cert -alias {{ ssl_D }} -keystore cacerts -storepass changeit; done"
-  - include_role:
-      name: ambari-server
-      tasks_from: run-ambari-manager-command
-    vars:
-      additional_params: "--action generate-component-hosts --ini-file /var/lib/ambari-server/resources/ssl/ambari_components.ini --component-list '{{ ssl_supported_components }}'"
+    shell: "cp {{ java_home['stdout'] }}/jre/lib/security/cacerts /var/lib/ambari-server/resources/ssl/ ; {{ java_home['stdout'] }}/bin/keytool -importcert -noprompt -file /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer -alias {{ ssl_D }} -keystore /var/lib/ambari-server/resources/ssl/cacerts -storepass changeit"
+  - name: archive files
+    shell: cd /var/lib/ambari-server/resources/ && tar -zczf ssl.tar.gz ssl
+#  - include_role:
+#      name: ambari-server
+#      tasks_from: run-ambari-manager-command
+#    vars:
+#      additional_params: "--action generate-component-hosts --ini-file /var/lib/ambari-server/resources/ssl/ambari_components.ini --component-list '{{ ssl_supported_components }}'"
