@@ -1,3 +1,5 @@
 - name: "Run /var/lib/ambari-server/resources/scripts/configs.py script with {{ command_type }}: extra params: {{ additional_params }}"
   become: true
   action: "shell /var/lib/ambari-server/resources/scripts/configs.py -t {{ ambari_port }} -u {{ ambari_username }} -p {{ ambari_password }} -s {{ ambari_protocol }} -n {{ ambari_cluster }} -l localhost -a {{ configs_action }} -c {{ configs_type }} -k {{ configs_key }} {{ additional_params }}"
+  environment:
+    PYTHONHTTPSVERIFY: 0
