@@ -3,16 +3,16 @@
   tasks:
   - include: ../roles/ambari-server/tasks/run-configs-command.yml
     vars:
-      additional_params: ""
+      additional_params: "-k {{ configs_key }}"
       command_type: "get"
     when: configs_action == 'get'
   - include: ../roles/ambari-server/tasks/run-configs-command.yml
     vars:
-      additional_params: "-v {{ configs_value }}"
+      additional_params: "-k {{ configs_key }} -v {{ configs_value }}"
       command_type: "set"
     when: configs_action == 'set'
   - include: ../roles/ambari-server/tasks/run-configs-command.yml
     vars:
-      additional_params: ""
+      additional_params: "-k {{ configs_key }}"
       command_type: "delete"
     when: configs_action == 'delete'
