@@ -1,0 +1,3 @@
+- name: Run Json Modifier script
+  become: true
+  script: "../../../scripts/ambari_json_modifier.py --input {{ json_modifier_input }} --update-input {{ json_modifier_update_input }} --output {{ json_modifier_output }} --config-type {{ json_modifier_config_type }} --service-filter {{ json_modifier_service_filter }} --service-config-map-input {{ json_modifier_service_config_map_input }}"

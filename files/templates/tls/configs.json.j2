@@ -1,0 +1,24 @@
+{
+   "infra-solr-env" : {
+     "infra_solr_ssl_enabled": "true",
+     "infra_solr_truststore_location": "{{ ssl_ts_location}}/truststore.jks",
+     "infra_solr_truststore_password": "{{ ssl_ts_password}}",
+     "infra_solr_keystore_location": "{{ ssl_ks_location}}/server.jks",
+     "infra_solr_keystore_password": "{{ ssl_ks_password}}"
+   },
+   "logfeeder-env" : {
+     "logfeeder_truststore_locaion": "{{ ssl_ts_location}}/truststore.jks",
+     "logfeeder_truststore_password": "{{ ssl_ts_password}}",
+     "logfeeder_keystore_locaion": "{{ ssl_ks_location}}/server.jks",
+     "logfeeder_keystore_password": "{{ ssl_ks_password}}"
+   },
+   "logsearch-properties": {
+     "logsearch.protocol": "https"
+   },
+   "logsearch-env": {
+     "logsearch_truststore_locaion": "{{ ssl_ts_location}}/truststore.jks",
+     "logsearch_truststore_password": "{{ ssl_ts_password}}",
+     "logsearch_keystore_locaion": "{{ ssl_ks_location}}/server.jks",
+     "logsearch_keystore_password": "{{ ssl_ks_password}}"
+   }
+}

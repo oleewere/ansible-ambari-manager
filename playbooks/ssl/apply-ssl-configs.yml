@@ -1,0 +1,48 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+  - name: generate update configs.json
+    template:
+      src: ../../files/static/service-config-type-map.json
+      dest: "/tmp/service_config_type_map.json"
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: generate service config map json
+    template:
+      src: ../../files/templates/tls/configs.json.j2
+      dest: "/tmp/update_configs.json"
+      owner: "{{ remote_ambari_server_user }}"
+      group: "{{ remote_ambari_server_group }}"
+      mode: 0755
+  - name: Get config payloads
+    include_role:
+       name: ambari-server
+       tasks_from: run-configs-command
+    vars:
+      command_type: "GET"
+      configs_action: "get"
+      configs_type: "{{ item }}"
+      additional_params: "--file /tmp/{{ item }}-payload.json"
+    with_items: "{{ lookup('template', '../../files/templates/tls/configs.json.j2') }}"
+  - name: Update config payloads
+    include_role:
+      name: ambari-server
+      tasks_from: update-config-json-command
+    vars:
+      json_modifier_input: "/tmp/{{ item }}-payload.json"
+      json_modifier_output: "/tmp/{{ item }}-final.json"
+      json_modifier_update_input: "/tmp/update_configs.json"
+      json_modifier_config_type: "{{ item }}"
+      json_modifier_service_filter: "{{ installed_ssl_services }}"
+      json_modifier_service_config_map_input: "/tmp/service_config_type_map.json"
+    with_items: "{{ lookup('template', '../../files/templates/tls/configs.json.j2') }}"
+  - include_role:
+      name: ambari-server
+      tasks_from: run-configs-command
+    vars:
+      command_type: "SET"
+      configs_action: "set"
+      configs_type: "{{ item }}"
+      additional_params: "--file /tmp/{{ item }}-final.json"
+    with_items: "{{ lookup('template', '../../files/templates/tls/configs.json.j2') }}"

@@ -1,0 +1,13 @@
+{
+  "AMBARI_INFRA_SOLR": [
+    "infra-solr-env"
+  ],
+  "LOGSEARCH" : [
+    "logfeeder-env",
+    "logsearch-properties",
+    "logsearch-env"
+  ],
+  "RANGER" : [
+    "ranger-env"
+  ]
+}
