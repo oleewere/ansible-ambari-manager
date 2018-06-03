@@ -83,8 +83,3 @@
     shell: "cp {{ java_home['stdout'] }}/jre/lib/security/cacerts /var/lib/ambari-server/resources/ssl/ ; {{ java_home['stdout'] }}/bin/keytool -importcert -noprompt -file /var/lib/ambari-server/resources/ssl/ca/{{ ssl_D }}.cer -alias {{ ssl_D }} -keystore /var/lib/ambari-server/resources/ssl/cacerts -storepass changeit"
   - name: archive files
     shell: cd /var/lib/ambari-server/resources/ && tar -zczf ssl.tar.gz ssl
-#  - include_role:
-#      name: ambari-server
-#      tasks_from: run-ambari-manager-command
-#    vars:
-#      additional_params: "--action generate-component-hosts --ini-file /var/lib/ambari-server/resources/ssl/ambari_components.ini --component-list '{{ ssl_supported_components }}'"
