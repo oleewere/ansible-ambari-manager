@@ -26,6 +26,8 @@ ambari_build_number=103
 bp_master_components=INFRA_SOLR_CLIENT
 bp_slave_components=INFRA_SOLR_CLIENT,INFRA_SOLR
 
+installed_ssl_services=AMBARI_INFRA_SOLR,LOGSEARCH
+
 kerberos_realm=EXAMPLE.COM
 kerberos_domain_realm=ambari.apache.org
 kdc_hostname=c6401.ambari.apache.org
