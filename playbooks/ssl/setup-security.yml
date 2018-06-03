@@ -11,5 +11,7 @@
       cp /var/lib/ambari-server/resources/ssl/pem/$shost.pem {{ ssl_ks_location }}/server.pem
   - name: "Setup HTTPS"
     shell: "ambari-server setup-security --security-option=setup-https --truststore-type=jks --truststore-path={{ ssl_ts_location }}/truststore-ambari.jks --truststore-password={{ ssl_ts_password }} --import-cert-path={{ ssl_ks_location }}/server.pem --import-key-path={{ ssl_ks_location }}/server.key --pem-password='' --api-ssl=true --api-ssl-port=8443"
+  - name: "Setup TrustStore"
+    shell: "ambari-server setup-security --security-option=setup-truststore --truststore-type=jks --truststore-path={{ ssl_ts_location }}/truststore-ambari.jks --truststore-password={{ ssl_ts_password }}"
   - name: "Restart ambari-server"
     shell: "ambari-server restart"
