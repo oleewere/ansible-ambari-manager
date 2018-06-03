@@ -1,0 +1,18 @@
+- hosts: ambari-server
+  become: true
+  tasks:
+    - file: path=/var/lib/ambari-server/resources/ssl/creds.jceks state=absent
+    - file: path=/tmp/creds.jceks state=absent
+    - name: Generate Atlas credential (keystore.password)
+      shell: "hadoop credential create keystore.password -provider jceks://file/tmp/creds.jceks -value '{{ ssl_ks_password }}'"
+    - name: Generate Atlas credential (password)
+      shell: "hadoop credential create password -provider jceks://file/tmp/creds.jceks -value '{{ ssl_ks_password }}'"
+    - name: Generate Atlas credential (truststore.password)
+      shell: "hadoop credential create truststore.password -provider jceks://file/tmp/creds.jceks -value '{{ ssl_ts_password }}'"
+    - name: Copy Atlas credential to /var/lib/ambari-server/resources
+      shell: "cp /tmp/creds.jceks /var/lib/ambari-server/resources/"
+- hosts: ambari-agent
+  become: true
+  tasks:
+  - name: Download creds.jks from Ambari server
+    shell: "curl -k -o /tmp/creds.jceks '{{ ambari_protocol }}://{{ groups[['ambari-server'][0]][0] }}:{{ ambari_port }}/resources/creds.jceks'"

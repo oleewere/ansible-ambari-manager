@@ -8,6 +8,11 @@
     "logsearch-env"
   ],
   "RANGER" : [
-    "ranger-env"
+    "admin-properties",
+    "ranger-admin-site"
+  ],
+  "ATLAS": [
+    "application-properties",
+    "atlas-env"
   ]
 }

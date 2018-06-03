@@ -8,7 +8,7 @@
   become: true
   tasks:
   - name: Download ssl cert targz from Ambari server
-    shell: "curl -k -o /tmp/ssl.tar.gz '{{ ambari_protocol }}://{{ groups[['ambari-server'][0]][0] }}:{{ '8080' if ambari_protocol == 'http' else '8443' }}/resources/ssl.tar.gz'"
+    shell: "curl -k -o /tmp/ssl.tar.gz '{{ ambari_protocol }}://{{ groups[['ambari-server'][0]][0] }}:{{ ambari_port }}/resources/ssl.tar.gz'"
   - file: path=/tmp/ssl state=absent
   - name: Untar ssl.tar.gz
     shell: "cd /tmp/ && tar -xzf ssl.tar.gz"
@@ -32,6 +32,13 @@
     shell: "shost=$(echo `hostname -f` | cut -d . -f 1); cp -r /tmp/ssl/cert/${shost}.cer {{ ssl_ks_location }}/server.pem"
   - name: Copy Truststore
     shell: "cp -r /tmp/ssl/truststore.jks {{ ssl_ts_location }}/truststore.jks"
+  - name: Copy Truststore as ranger.jks
+    shell: "cp -r /tmp/ssl/truststore.jks {{ ssl_ts_location }}/ranger-plugin.jks"
   - name: Copy cacerts
     shell: "cp /tmp/ssl/cacerts {{ hostvars[groups['ambari-server'][0]]['java_home']['stdout'] }}/jre/lib/security/cacerts && cp /tmp/ssl/cacerts /etc/pki/java/cacerts"
+  - stat: path=/tmp/creds.jceks
+    register: atlas_cred_var
+  - name: Copy Atlas creds
+    shell: "cp /tmp/creds.jceks /etc/pki/creds.jceks"
+    when: atlas_cred_var.stat.exists
 
