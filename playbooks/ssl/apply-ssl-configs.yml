@@ -44,5 +44,6 @@
       command_type: "SET"
       configs_action: "set"
       configs_type: "{{ item }}"
+      configs_file: "/tmp/{{ item }}-final.json"
       additional_params: "--file /tmp/{{ item }}-final.json"
     with_items: "{{ lookup('template', '../../files/templates/tls/configs.json.j2') }}"
